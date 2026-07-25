@@ -1,3 +1,11 @@
+import img1 from '../assets/imageone.jpeg'
+import img2 from '../assets/giftcard1.jpeg'
+import img3 from '../assets/giftcard2.jpeg'
+import img4 from '../assets/pencilart1.jpeg'
+import img5 from '../assets/bouquet1.jpeg'
+
+import img6 from '../assets/letter1.jpeg'
+
 export const OCCASIONS = [
   {
     id: 'all',
@@ -8,68 +16,51 @@ export const OCCASIONS = [
     badge: 'Popular'
   },
   {
-    id: 'birthday',
-    name: 'Birthday',
+    id: 'giftcard',
+    name: 'Gift Cards',
     icon: 'Cake',
     count: '32 Items',
     description: 'Light up their special day with custom gifts',
-    image: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?q=80&w=800&auto=format&fit=crop',
+    image: img3,
     badge: 'Trending'
   },
   {
-    id: 'wedding',
-    name: 'Wedding',
+    id: 'birthdaybook',
+    name: 'Birthday Book',
     icon: 'Crown',
     count: '28 Items',
     description: 'Elegant keepsake wedding gifts & customized decor',
-    image: 'https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=800&auto=format&fit=crop',
+    image: img1,
     badge: 'Premium'
   },
   {
-    id: 'anniversary',
-    name: 'Anniversary',
+    id: 'vintageletters',
+    name: 'Vintage Letters',
     icon: 'Heart',
     count: '24 Items',
     description: 'Eternal memory keepsakes & couple frames',
-    image: 'https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=800&auto=format&fit=crop',
+    image: img6,
     badge: 'Romantic'
   },
   {
-    id: 'babyshower',
-    name: 'Baby Shower',
+    id: 'bouquet',
+    name: 'Bouquet',
     icon: 'Users',
     count: '18 Items',
     description: 'Cute handcrafted items for new parents & babies',
-    image: 'https://images.unsplash.com/photo-1519689680058-324335c77eba?q=80&w=800&auto=format&fit=crop',
+    image: img5,
     badge: 'Cute'
   },
   {
-    id: 'housewarming',
-    name: 'Housewarming',
+    id: 'pencilart',
+    name: 'Pencil Art',
     icon: 'Sun',
     count: '18 Items',
     description: 'Warm home decor & handcrafted miniature houses',
-    image: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?q=80&w=800&auto=format&fit=crop',
+    image: img4,
     badge: 'New'
   },
-  {
-    id: 'festivals',
-    name: 'Festivals',
-    icon: 'Sparkles',
-    count: '26 Items',
-    description: 'Diwali, Christmas & festive celebration gifts',
-    image: 'https://images.unsplash.com/photo-1605371924599-2d0365da1ae0?q=80&w=800&auto=format&fit=crop',
-    badge: 'Festive'
-  },
-  {
-    id: 'corporate',
-    name: 'Corporate Gifts',
-    icon: 'Palette',
-    count: '25 Items',
-    description: 'Custom logo desk accessories & hampers',
-    image: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?q=80&w=800&auto=format&fit=crop',
-    badge: 'Bulk'
-  }
+  
 ];
 
 export const PRODUCTS = [

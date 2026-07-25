@@ -30,14 +30,18 @@
 }
 
 .occasions-cards-row {
+  color: var(--coral-pink);
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 1rem;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
   overflow-x: auto;
   padding-bottom: 0.5rem;
 }
-
 .occasion-item-card {
+  margin: auto;
+  width: 300px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -69,21 +73,22 @@
 
 .occasion-info-box {
   width: 100%;
-  background: #fff5f3;
+  background: var(--coral-pink);
   border-radius: var(--radius-md);
   padding: 0.5rem 0.25rem;
   text-align: center;
+
 }
 
 .occasion-name-text {
   font-size: 0.8125rem;
-  font-weight: 700;
-  color: var(--neutral-dark);
+  font-weight: 800;
+  color: var(--neutral-light);
 }
 
 .occasion-count-text {
   font-size: 0.72rem;
-  color: var(--neutral-muted);
+  color: var(--neutral-light);
   margin-top: 0.1rem;
 }
 

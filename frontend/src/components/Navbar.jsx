@@ -18,20 +18,7 @@ export default function Navbar({
 
   return (
     <header className="navbar-header">
-      {/* Top Banner Ticker */}
-      <div className="top-ticker">
-        <div className="top-ticker-container">
-          <div className="top-ticker-left">
-            <Truck size={14} />
-            <span>Free Shipping on Orders above ₹999 | COD Available</span>
-          </div>
-          <div className="top-ticker-right">
-            <a href="#track">Track Order</a>
-            <span>|</span>
-            <a href="#support">Help & Support</a>
-          </div>
-        </div>
-      </div>
+      
 
       {/* Main Glass Navbar */}
       <nav className="glass-nav-main">
@@ -43,7 +30,7 @@ export default function Navbar({
               <span className="logo-script-title">Jnapika</span>
               <Gift size={22} color="#d95e68" />
             </div>
-            <p className="logo-tagline">Gifts that speak from the heart</p>
+            <p className="logo-tagline">Truning love and memories <br/>into beautiful,handmade keepsakes</p>
           </div>
 
           {/* Center Navigation Links */}
@@ -86,7 +73,7 @@ export default function Navbar({
                   zIndex: 1100,
                   border: '1px solid #fce8e6'
                 }}>
-                  {['birthday', 'wedding', 'anniversary', 'babyshower', 'housewarming', 'festivals', 'corporate'].map((cat) => (
+                  {['gift cards','birthday book', 'vintage letters', 'bouquet','pencil art'].map((cat) => (
                     <button
                       key={cat}
                       onClick={() => {
@@ -102,7 +89,7 @@ export default function Navbar({
                         fontWeight: selectedCategory === cat ? 600 : 400
                       }}
                     >
-                      {cat.charAt(0).toUpperCase() + cat.slice(1)} Gifts
+                      {cat.charAt(0).toUpperCase() + cat.slice(1)}
                     </button>
                   ))}
                 </div>

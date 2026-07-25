@@ -1,5 +1,4 @@
 import React from 'react';
-import { ChevronRight } from 'lucide-react';
 import { OCCASIONS } from '../data/mockData';
 import './OccasionsSection.css';
 
@@ -35,9 +34,7 @@ export default function OccasionsSection({ selectedCategory, setSelectedCategory
           ))}
         </div>
 
-        <button className="slider-next-btn" title="Next">
-          <ChevronRight size={18} />
-        </button>
+       
       </div>
 
     </section>

@@ -1,8 +1,26 @@
-import React from 'react';
+import React, { useState,useEffect } from 'react';
 import { Truck, Gift, ShieldCheck, Headphones } from 'lucide-react';
 import './HeroBanner.css';
+import image1 from '../assets/imageone.jpeg'
+import image2 from '../assets/imagetwo.png'
+import image3 from '../assets/imagethree.jpeg'
+import image4 from '../assets/imagefour.jpeg'
 
 export default function HeroBanner({ onExploreClick, onCustomOrderClick }) {
+
+
+  const images = [
+    image1,image2,image3,image4
+  ]
+  const [index, setIndex] = useState(0)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIndex((prevIndex) => (prevIndex + 1) % images.length);
+    }, 3000);
+
+    return () => clearInterval(interval); 
+  }, []);
   return (
     <section id="home">
       
@@ -33,20 +51,20 @@ export default function HeroBanner({ onExploreClick, onCustomOrderClick }) {
             </div>
 
             {/* Pagination Dots */}
-            <div className="pagination-dots">
-              <span className="dot-pill active"></span>
-              <span className="dot-pill"></span>
-              <span className="dot-pill"></span>
-            </div>
+            
           </div>
 
           {/* Right Product Image */}
           <div className="hero-right-image-box">
+
+            
             <img
-              src="https://images.unsplash.com/photo-1549465220-1a8b9238cd48?q=80&w=1200&auto=format&fit=crop"
+              key={index}
+              src={images[index]}
               alt="Handcrafted Gift Box with Love Note & Candle"
-              className="hero-main-img"
+              className="hero-main-img fade-Img"
             />
+            
           </div>
 
         </div>

@@ -1,0 +1,50 @@
+/* WishlistDrawer.css */
+.drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: flex-end;
+}
+
+.drawer-panel-box {
+  width: 100%;
+  max-width: 26rem;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: var(--glass-blur);
+  border-left: 1.5px solid var(--pink-200);
+  box-shadow: -10px 0 30px rgba(168, 85, 247, 0.2);
+  display: flex;
+  flex-direction: column;
+}
+
+.drawer-header {
+  background: linear-gradient(135deg, var(--purple-700), var(--pink-600));
+  color: var(--color-white);
+  padding: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.drawer-body-scroll {
+  flex: 1;
+  padding: 1.25rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.wishlist-item-card {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  border-radius: var(--radius-xl);
+  background: var(--pink-50);
+  border: 1px solid var(--pink-200);
+}

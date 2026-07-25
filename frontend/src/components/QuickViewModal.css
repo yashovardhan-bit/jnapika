@@ -1,0 +1,43 @@
+/* QuickViewModal.css */
+.quickview-dialog-box {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: var(--glass-blur);
+  border-radius: var(--radius-3xl);
+  max-width: 48rem;
+  width: 100%;
+  overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgba(168, 85, 247, 0.3);
+  border: 1.5px solid var(--pink-200);
+  max-height: 90vh;
+  display: flex;
+  flex-direction: row;
+  position: relative;
+}
+
+.quickview-img-col {
+  width: 50%;
+  position: relative;
+  background: var(--pink-50);
+}
+
+.quickview-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.quickview-info-col {
+  width: 50%;
+  padding: 1.5rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+@media (max-width: 768px) {
+  .quickview-dialog-box { flex-direction: column; }
+  .quickview-img-col { width: 100%; height: 14rem; }
+  .quickview-info-col { width: 100%; }
+}

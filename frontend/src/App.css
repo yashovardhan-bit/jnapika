@@ -1,0 +1,35 @@
+/* App.css - Custom App Layout & Float Actions */
+.app-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.float-whatsapp-button {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 1000;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, #25D366, #128C7E);
+  color: var(--color-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 25px rgba(37, 211, 102, 0.4);
+  transition: var(--transition-smooth);
+  animation: float 4s ease-in-out infinite;
+}
+.float-whatsapp-button:hover {
+  transform: scale(1.1) rotate(6deg);
+  box-shadow: 0 14px 30px rgba(37, 211, 102, 0.5);
+}
+
+.toast-container {
+  position: fixed;
+  bottom: 2rem;
+  left: 2rem;
+  z-index: 1500;
+}

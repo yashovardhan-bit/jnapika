@@ -1,0 +1,42 @@
+/* ProductGrid.css - Exact Design Matching Image */
+.bestsellers-section {
+  max-width: 80rem;
+  margin: 3.5rem auto;
+  padding: 0 2rem;
+}
+
+.bestsellers-header-row {
+  position: relative;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.view-all-link {
+  position: absolute;
+  right: 0;
+  top: 0;
+  color: var(--coral-pink);
+  font-size: 0.875rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  transition: opacity 0.2s;
+}
+.view-all-link:hover {
+  opacity: 0.8;
+  text-decoration: underline;
+}
+
+.bestsellers-grid-container {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 1.25rem;
+}
+
+@media (max-width: 1200px) {
+  .bestsellers-grid-container { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 640px) {
+  .bestsellers-grid-container { grid-template-columns: repeat(2, 1fr); }
+}

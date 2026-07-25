@@ -1,0 +1,117 @@
+/* OccasionsSection.css - Exact Design Matching Image */
+.occasions-section {
+  max-width: 80rem;
+  margin: 3rem auto;
+  padding: 0 2rem;
+}
+
+.section-header-title-box {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.section-main-title {
+  font-family: var(--font-sans);
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--neutral-dark);
+}
+
+.title-heart-accent {
+  color: var(--coral-pink);
+  font-size: 0.9rem;
+  margin-top: 0.2rem;
+}
+
+.occasions-slider-wrapper {
+  position: relative;
+}
+
+.occasions-cards-row {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+}
+
+.occasion-item-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+.occasion-item-card:hover {
+  transform: translateY(-4px);
+}
+
+.occasion-img-box {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-bottom: 0.6rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.occasion-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+.occasion-item-card:hover .occasion-img {
+  transform: scale(1.06);
+}
+
+.occasion-info-box {
+  width: 100%;
+  background: #fff5f3;
+  border-radius: var(--radius-md);
+  padding: 0.5rem 0.25rem;
+  text-align: center;
+}
+
+.occasion-name-text {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--neutral-dark);
+}
+
+.occasion-count-text {
+  font-size: 0.72rem;
+  color: var(--neutral-muted);
+  margin-top: 0.1rem;
+}
+
+.slider-next-btn {
+  position: absolute;
+  right: -1rem;
+  top: 40%;
+  transform: translateY(-50%);
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  color: var(--neutral-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  transition: var(--transition-smooth);
+}
+.slider-next-btn:hover {
+  background: var(--coral-pink);
+  color: #ffffff;
+}
+
+@media (max-width: 1024px) {
+  .occasions-cards-row { grid-template-columns: repeat(4, 1fr); }
+}
+@media (max-width: 640px) {
+  .occasions-cards-row { grid-template-columns: repeat(2, 1fr); }
+}

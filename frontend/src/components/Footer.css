@@ -2,7 +2,7 @@
 
 /* Newsletter Subscription Bar */
 .newsletter-bar-wrapper {
-  background: #fce8e6;
+  background: var(--coral-pink);
   padding: 1.5rem 2rem;
 }
 
@@ -22,19 +22,19 @@
 }
 
 .envelope-icon-box {
-  color: var(--coral-pink);
+  color: #ffffff;
   flex-shrink: 0;
 }
 
 .newsletter-title-text {
   font-size: 0.9rem;
   font-weight: 700;
-  color: var(--neutral-dark);
+  color: #ffffff
 }
 
 .newsletter-sub-text {
   font-size: 0.78rem;
-  color: var(--neutral-body);
+  color: #ffffff;
 }
 
 .newsletter-form-right {
@@ -50,19 +50,19 @@
   padding: 0.65rem 1rem;
   border-radius: var(--radius-sm);
   border: 1px solid #e0e0e0;
-  background: #ffffff;
+  background: #e0e0e0;
   font-size: 0.8125rem;
 }
 .newsletter-input:focus {
   outline: none;
-  border-color: var(--coral-pink);
+  border-color: #ffffff
 }
 
 .btn-subscribe {
   padding: 0.65rem 1.4rem;
   border-radius: var(--radius-sm);
-  background: var(--coral-pink);
-  color: #ffffff;
+  background:#e0e0e0;
+  color: var(--coral-pink);
   font-size: 0.8125rem;
   font-weight: 600;
   white-space: nowrap;
@@ -74,10 +74,10 @@
 
 /* Footer Section */
 .footer-main-section {
-  background: #ffffff;
+  background:var(--coral-pink);
   padding-top: 3.5rem;
   padding-bottom: 1.5rem;
-  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  border-top: 1px solid #ffffff
 }
 
 .footer-inner-container {
@@ -99,7 +99,7 @@
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--neutral-dark);
+  color:  #ffffff;
   margin-bottom: 1rem;
 }
 
@@ -109,15 +109,15 @@
   flex-direction: column;
   gap: 0.4rem;
   font-size: 0.78rem;
-  color: var(--neutral-body);
+  color: #2d2b2b;
 }
 
 .footer-col-links a {
-  color: var(--neutral-body);
+  color: #2d2b2b;
   transition: color 0.2s;
 }
 .footer-col-links a:hover {
-  color: var(--coral-pink);
+  color: #ffffff;
 }
 
 .footer-social-icons {
@@ -131,8 +131,8 @@
   width: 1.8rem;
   height: 1.8rem;
   border-radius: 50%;
-  background: #f5f5f5;
-  color: var(--neutral-dark);
+  background:#2d2b2b;
+  color:  #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -153,10 +153,10 @@
 .pay-badge-pill {
   padding: 0.25rem 0.5rem;
   border-radius: 4px;
-  background: #f5f5f5;
+  background: rgba(217, 94, 104, 0.25);
   font-size: 0.7rem;
   font-weight: 700;
-  color: var(--neutral-dark);
+  color:  #ffffff;
   border: 1px solid #e0e0e0;
 }
 
@@ -164,7 +164,7 @@
   padding-top: 1.5rem;
   text-align: center;
   font-size: 0.75rem;
-  color: var(--neutral-muted);
+  color:#ffffff;
 }
 
 @media (max-width: 992px) {

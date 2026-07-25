@@ -85,11 +85,11 @@ export default function Footer({ onSelectCategory }) {
             
             {/* Brand Info */}
             <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.3rem' }}>
-                <span className="logo-script-title" style={{ fontSize: '1.6rem' }}>Jnapika</span>
-                <Gift size={20} color="#d95e68" />
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.3rem',color:'white' }}>
+                <span  style={{ fontSize: '1.6rem' }}>Jnapika</span>
+                <Gift size={20} color="#ffffff" />
               </div>
-              <p style={{ fontSize: '0.68rem', color: 'var(--coral-pink)', fontStyle: 'italic', marginBottom: '0.75rem' }}>
+              <p style={{ fontSize: '0.68rem', color: '#ffffff', fontStyle: 'italic', marginBottom: '0.75rem' }}>
                 Gifts that speak from the heart
               </p>
 
@@ -125,12 +125,12 @@ export default function Footer({ onSelectCategory }) {
             <div>
               <h4 className="footer-col-title">OCCASIONS</h4>
               <ul className="footer-col-links">
-                <li><button onClick={() => onSelectCategory('birthday')}>Birthday</button></li>
-                <li><button onClick={() => onSelectCategory('wedding')}>Wedding</button></li>
-                <li><button onClick={() => onSelectCategory('anniversary')}>Anniversary</button></li>
-                <li><button onClick={() => onSelectCategory('babyshower')}>Baby Shower</button></li>
-                <li><button onClick={() => onSelectCategory('festivals')}>Festivals</button></li>
-                <li><button onClick={() => onSelectCategory('corporate')}>Corporate Gifts</button></li>
+                <li><button onClick={() => onSelectCategory('birthday')}>gift cards</button></li>
+                <li><button onClick={() => onSelectCategory('wedding')}>Birthdaybook</button></li>
+                <li><button onClick={() => onSelectCategory('anniversary')}>Vintage letters</button></li>
+                <li><button onClick={() => onSelectCategory('babyshower')}>Bouqet</button></li>
+                <li><button onClick={() => onSelectCategory('festivals')}>pencil art</button></li>
+                <li><button onClick={() => onSelectCategory('corporate')}>personalized gifts</button></li>
               </ul>
             </div>
 
@@ -158,7 +158,7 @@ export default function Footer({ onSelectCategory }) {
             </div>
 
             {/* WE ACCEPT */}
-            <div>
+            {/* <div>
               <h4 className="footer-col-title">WE ACCEPT</h4>
               <div className="payment-badges-row">
                 <span className="pay-badge-pill" style={{ color: '#1a1f71' }}>VISA</span>
@@ -166,7 +166,7 @@ export default function Footer({ onSelectCategory }) {
                 <span className="pay-badge-pill" style={{ color: '#005a9c' }}>RuPay</span>
                 <span className="pay-badge-pill" style={{ color: '#5f259f' }}>UPI</span>
               </div>
-            </div>
+            </div> */}
 
           </div>
 

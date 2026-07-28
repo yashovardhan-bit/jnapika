@@ -1,16 +1,24 @@
 import React from 'react';
-import { X, Star, Heart, ShoppingBag, Check } from 'lucide-react';
+import { X, Star, Heart, ShoppingBag, ShoppingCart, Check } from 'lucide-react';
 import './QuickViewModal.css';
 
-export default function QuickViewModal({ product, isOpen, onClose, onOrderNow, isWishlisted, onToggleWishlist }) {
+export default function QuickViewModal({ 
+  product, 
+  isOpen, 
+  onClose, 
+  onOrderNow, 
+  onAddToCart,
+  isWishlisted, 
+  onToggleWishlist 
+}) {
   if (!isOpen || !product) return null;
 
   return (
-    <div className="modal-overlay">
-      <div className="quickview-dialog-box">
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="quickview-dialog-box" onClick={(e) => e.stopPropagation()}>
         
         {/* Close Button */}
-        <button onClick={onClose} className="btn-close-modal" style={{ position: 'absolute', top: '1rem', right: '1rem', zIndex: 30, background: 'rgba(30,27,75,0.6)', padding: '0.4rem' }}>
+        <button onClick={onClose} className="quickview-btn-close" title="Close Modal">
           <X size={18} />
         </button>
 
@@ -37,22 +45,22 @@ export default function QuickViewModal({ product, isOpen, onClose, onOrderNow, i
               </div>
             </div>
 
-            <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.4rem', fontWeight: 800, color: 'var(--neutral-900)' }}>
+            <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.4rem', fontWeight: 800, color: 'var(--neutral-dark)' }}>
               {product.name}
             </h3>
 
             <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.5rem' }}>
-              <span style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--neutral-900)' }}>₹{product.price}</span>
+              <span style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--coral-pink)' }}>₹{product.price}</span>
               {product.originalPrice && (
-                <span style={{ fontSize: '0.85rem', color: 'var(--neutral-400)', textDecoration: 'line-through' }}>₹{product.originalPrice}</span>
+                <span style={{ fontSize: '0.85rem', color: 'var(--neutral-muted)', textDecoration: 'line-through' }}>₹{product.originalPrice}</span>
               )}
             </div>
 
-            <p style={{ fontSize: '0.8125rem', color: 'var(--neutral-600)', lineHeight: 1.5 }}>
+            <p style={{ fontSize: '0.8125rem', color: 'var(--neutral-body)', lineHeight: 1.5 }}>
               {product.description}
             </p>
 
-            <div style={{ paddingTop: '0.5rem', borderTop: '1px solid var(--purple-50)', fontSize: '0.8rem', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+            <div style={{ paddingTop: '0.5rem', borderTop: '1px solid #f1f5f9', fontSize: '0.8rem', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
               <div>
                 <strong>Material: </strong>
                 <span>{product.material}</span>
@@ -63,7 +71,7 @@ export default function QuickViewModal({ product, isOpen, onClose, onOrderNow, i
                   <strong style={{ display: 'block', marginBottom: '0.2rem' }}>Highlights:</strong>
                   <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
                     {product.features.map((feat, idx) => (
-                      <li key={idx} style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', color: 'var(--neutral-700)' }}>
+                      <li key={idx} style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', color: 'var(--neutral-dark)' }}>
                         <Check size={12} color="#059669" />
                         <span>{feat}</span>
                       </li>
@@ -74,7 +82,7 @@ export default function QuickViewModal({ product, isOpen, onClose, onOrderNow, i
             </div>
           </div>
 
-          <div style={{ display: 'flex', gap: '0.75rem', paddingTop: '1rem', borderTop: '1px solid var(--purple-50)' }}>
+          <div style={{ display: 'flex', gap: '0.75rem', paddingTop: '1rem', borderTop: '1px solid #f1f5f9' }}>
             <button
               onClick={() => {
                 onClose();
@@ -88,11 +96,23 @@ export default function QuickViewModal({ product, isOpen, onClose, onOrderNow, i
             </button>
 
             <button
+              onClick={() => {
+                if (onAddToCart) onAddToCart(product);
+              }}
+              className="btn-add-cart-quick"
+              title="Add to Cart"
+            >
+              <ShoppingCart size={16} />
+              <span>Add to Cart</span>
+            </button>
+
+            <button
               onClick={() => onToggleWishlist(product)}
               className={`btn-wishlist-card ${isWishlisted ? 'active' : ''}`}
               style={{ position: 'static' }}
+              title="Wishlist"
             >
-              <Heart size={18} fill={isWishlisted ? '#ffffff' : 'none'} />
+              <Heart size={18} fill={isWishlisted ? 'var(--coral-pink)' : 'none'} />
             </button>
           </div>
 

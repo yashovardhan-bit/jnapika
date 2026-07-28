@@ -1,26 +1,28 @@
-/* ProductCard.css - Exact Design Matching Image */
+/* ProductCard.css - Dual Action Buttons (Order Now & Cart) */
 .bestseller-card-item {
   background: #ffffff;
   border-radius: var(--radius-lg);
   overflow: hidden;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
-  border: 1px solid rgba(0, 0, 0, 0.04);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+  border: 1.5px solid rgba(217, 94, 104, 0.12);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   transition: var(--transition-smooth);
 }
 .bestseller-card-item:hover {
-  box-shadow: var(--shadow-hover);
+  box-shadow: 0 12px 30px rgba(217, 94, 104, 0.2);
   transform: translateY(-4px);
+  border-color: var(--coral-pink);
 }
 
 .card-image-box {
   width: 100%;
   aspect-ratio: 1 / 1;
-  background: #fff5f3;
+  background: var(--coral-pink-bg);
   overflow: hidden;
   cursor: pointer;
+  position: relative;
 }
 
 .card-img-element {
@@ -33,16 +35,37 @@
   transform: scale(1.06);
 }
 
+.card-badge-pill {
+  position: absolute;
+  top: 0.6rem;
+  left: 0.6rem;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(4px);
+  color: var(--coral-pink);
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 0.25rem 0.6rem;
+  border-radius: var(--radius-full);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
 .card-details-box {
   padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
 }
 
 .card-title-text {
-  font-size: 0.875rem;
+  font-size: 0.9rem;
   font-weight: 700;
   color: var(--neutral-dark);
-  margin-bottom: 0.3rem;
+  margin: 0;
   cursor: pointer;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 .card-title-text:hover {
   color: var(--coral-pink);
@@ -54,39 +77,77 @@
   gap: 0.2rem;
   font-size: 0.72rem;
   color: var(--neutral-muted);
-  margin-bottom: 0.8rem;
 }
 
 .star-icon-filled {
   color: var(--star-yellow);
 }
 
-.card-price-action-line {
+.card-price-row {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.4rem;
+  margin-top: 0.1rem;
 }
 
 .price-bold-text {
-  font-size: 1rem;
+  font-size: 1.05rem;
   font-weight: 800;
-  color: var(--neutral-dark);
+  color: var(--coral-pink);
 }
 
-.btn-add-cart-circle {
-  width: 2.1rem;
-  height: 2.1rem;
-  border-radius: 50%;
-  border: 1px solid #e0e0e0;
-  background: #ffffff;
-  color: var(--neutral-dark);
+.original-price-text {
+  font-size: 0.78rem;
+  color: var(--neutral-muted);
+  text-decoration: line-through;
+}
+
+.card-actions-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.btn-card-order-now {
+  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: var(--transition-smooth);
-}
-.btn-add-cart-circle:hover {
+  gap: 0.35rem;
+  padding: 0.55rem 0.6rem;
+  border-radius: var(--radius-md);
   background: var(--coral-pink);
   color: #ffffff;
-  border-color: var(--coral-pink);
+  font-size: 0.8rem;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(217, 94, 104, 0.25);
+  transition: var(--transition-smooth);
+}
+.btn-card-order-now:hover {
+  background: var(--coral-pink-hover);
+  transform: translateY(-1px);
+}
+
+.btn-card-add-cart {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  padding: 0.55rem 0.75rem;
+  border-radius: var(--radius-md);
+  background: var(--coral-pink-bg);
+  color: var(--coral-pink);
+  border: 1.5px solid var(--coral-pink);
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+.btn-card-add-cart:hover {
+  background: var(--coral-pink);
+  color: #ffffff;
+  transform: translateY(-1px);
 }

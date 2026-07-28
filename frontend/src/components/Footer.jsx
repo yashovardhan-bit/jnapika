@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Mail, Gift } from 'lucide-react';
+import React from 'react';
+import { Gift } from 'lucide-react';
 import './Footer.css';
 
 const InstagramIcon = ({ size = 15 }) => (
@@ -30,53 +30,9 @@ const YoutubeIcon = ({ size = 15 }) => (
   </svg>
 );
 
-export default function Footer({ onSelectCategory }) {
-  const [email, setEmail] = useState('');
-  const [subscribed, setSubscribed] = useState(false);
-
-  const handleSubscribe = (e) => {
-    e.preventDefault();
-    if (email) {
-      setSubscribed(true);
-      setTimeout(() => setSubscribed(false), 3000);
-      setEmail('');
-    }
-  };
-
+export default function Footer({ onSelectCategory, onOpenCustomOrder }) {
   return (
     <footer>
-      
-      {/* Newsletter Subscription Bar */}
-      <div className="newsletter-bar-wrapper">
-        <div className="newsletter-inner-container">
-          
-          <div className="newsletter-left-info">
-            <div className="envelope-icon-box">
-              <Mail size={32} />
-            </div>
-            <div>
-              <h4 className="newsletter-title-text">Stay updated with exclusive offers & new arrivals</h4>
-              <p className="newsletter-sub-text">Subscribe to our newsletter and never miss a deal!</p>
-            </div>
-          </div>
-
-          <form onSubmit={handleSubscribe} className="newsletter-form-right">
-            <input
-              type="email"
-              placeholder="Enter your email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="newsletter-input"
-            />
-            <button type="submit" className="btn-subscribe">
-              {subscribed ? 'Subscribed!' : 'Subscribe'}
-            </button>
-          </form>
-
-        </div>
-      </div>
-
       {/* Main Footer Links */}
       <div className="footer-main-section">
         <div className="footer-inner-container">
@@ -84,13 +40,13 @@ export default function Footer({ onSelectCategory }) {
           <div className="footer-columns-grid">
             
             {/* Brand Info */}
-            <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.3rem',color:'white' }}>
-                <span  style={{ fontSize: '1.6rem' }}>Jnapika</span>
-                <Gift size={20} color="#ffffff" />
+            <div className="footer-brand-col">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.3rem', color: 'white' }}>
+                <span style={{ fontSize: '1.8rem', fontFamily: 'var(--font-serif)', fontWeight: 700 }}>Jnapika</span>
+                <Gift size={22} color="#ffffff" />
               </div>
-              <p style={{ fontSize: '0.68rem', color: '#ffffff', fontStyle: 'italic', marginBottom: '0.75rem' }}>
-                Gifts that speak from the heart
+              <p style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.9)', fontStyle: 'italic', marginBottom: '1rem' }}>
+                Turning love and memories into beautiful, handmade keepsakes.
               </p>
 
               <div className="footer-social-icons">
@@ -109,15 +65,15 @@ export default function Footer({ onSelectCategory }) {
               </div>
             </div>
 
-            {/* SHOP */}
+            {/* PRODUCTS */}
             <div>
-              <h4 className="footer-col-title">SHOP</h4>
+              <h4 className="footer-col-title">PRODUCTS</h4>
               <ul className="footer-col-links">
-                <li><a href="#products-catalog">All Products</a></li>
-                <li><a href="#products-catalog">New Arrivals</a></li>
-                <li><a href="#products-catalog">Bestsellers</a></li>
-                <li><a href="#products-catalog">Personalized Gifts</a></li>
-                <li><a href="#products-catalog">Gift Cards</a></li>
+                <li><button onClick={() => onSelectCategory('all')}>All Products</button></li>
+                <li><button onClick={() => onSelectCategory('all')}>New Arrivals</button></li>
+                <li><button onClick={() => onSelectCategory('all')}>Bestsellers</button></li>
+                <li><button onClick={onOpenCustomOrder}>Personalized Gifts</button></li>
+                <li><button onClick={() => onSelectCategory('giftcard')}>Gift Cards</button></li>
               </ul>
             </div>
 
@@ -125,12 +81,11 @@ export default function Footer({ onSelectCategory }) {
             <div>
               <h4 className="footer-col-title">OCCASIONS</h4>
               <ul className="footer-col-links">
-                <li><button onClick={() => onSelectCategory('birthday')}>gift cards</button></li>
-                <li><button onClick={() => onSelectCategory('wedding')}>Birthdaybook</button></li>
-                <li><button onClick={() => onSelectCategory('anniversary')}>Vintage letters</button></li>
-                <li><button onClick={() => onSelectCategory('babyshower')}>Bouqet</button></li>
-                <li><button onClick={() => onSelectCategory('festivals')}>pencil art</button></li>
-                <li><button onClick={() => onSelectCategory('corporate')}>personalized gifts</button></li>
+                <li><button onClick={() => onSelectCategory('giftcard')}>Gift Cards</button></li>
+                <li><button onClick={() => onSelectCategory('birthdaybook')}>Birthday Book</button></li>
+                <li><button onClick={() => onSelectCategory('vintageletters')}>Vintage Letters</button></li>
+                <li><button onClick={() => onSelectCategory('bouquet')}>Bouquet</button></li>
+                <li><button onClick={() => onSelectCategory('pencilart')}>Pencil Art</button></li>
               </ul>
             </div>
 
@@ -157,21 +112,10 @@ export default function Footer({ onSelectCategory }) {
               </ul>
             </div>
 
-            {/* WE ACCEPT */}
-            {/* <div>
-              <h4 className="footer-col-title">WE ACCEPT</h4>
-              <div className="payment-badges-row">
-                <span className="pay-badge-pill" style={{ color: '#1a1f71' }}>VISA</span>
-                <span className="pay-badge-pill" style={{ color: '#eb001b' }}>Mastercard</span>
-                <span className="pay-badge-pill" style={{ color: '#005a9c' }}>RuPay</span>
-                <span className="pay-badge-pill" style={{ color: '#5f259f' }}>UPI</span>
-              </div>
-            </div> */}
-
           </div>
 
           <div className="footer-bottom-copyright">
-            © 2024 Jnapika. All rights reserved.
+            © 2024 Jnapika. All rights reserved. Crafted with ♡ for special memories.
           </div>
 
         </div>

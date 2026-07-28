@@ -12,6 +12,7 @@ import OrderModal from './components/OrderModal';
 import QuickViewModal from './components/QuickViewModal';
 import AuthModal from './components/AuthModal';
 import WishlistDrawer from './components/WishlistDrawer';
+import CartDrawer from './components/CartDrawer';
 
 import { STORE_INFO, PRODUCTS } from './data/mockData';
 import { MessageCircle } from 'lucide-react';
@@ -20,19 +21,28 @@ import './App.css';
 export default function App() {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
+  
   const [wishlist, setWishlist] = useState(() => {
     const saved = localStorage.getItem('jnapika_wishlist');
     return saved ? JSON.parse(saved) : [];
   });
+
+  const [cart, setCart] = useState(() => {
+    const saved = localStorage.getItem('jnapika_cart');
+    return saved ? JSON.parse(saved) : [];
+  });
+
   const [orderHistory, setOrderHistory] = useState(() => {
     const saved = localStorage.getItem('jnapika_orders');
     return saved ? JSON.parse(saved) : [];
   });
 
-  const [activeModal, setActiveModal] = useState(null); // 'order' | 'quickview' | 'auth' | 'customOrder'
+  const [activeModal, setActiveModal] = useState(null); // 'order' | 'quickview' | 'auth'
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [wishlistOpen, setWishlistOpen] = useState(false);
+  const [cartOpen, setCartOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
+  
   const [user, setUser] = useState(() => {
     const saved = localStorage.getItem('jnapika_user');
     return saved ? JSON.parse(saved) : null;
@@ -41,6 +51,10 @@ export default function App() {
   useEffect(() => {
     localStorage.setItem('jnapika_wishlist', JSON.stringify(wishlist));
   }, [wishlist]);
+
+  useEffect(() => {
+    localStorage.setItem('jnapika_cart', JSON.stringify(cart));
+  }, [cart]);
 
   useEffect(() => {
     localStorage.setItem('jnapika_orders', JSON.stringify(orderHistory));
@@ -62,6 +76,39 @@ export default function App() {
     }
   };
 
+  const handleAddToCart = (product) => {
+    setCart((prevCart) => {
+      const existing = prevCart.find((item) => item.id === product.id);
+      if (existing) {
+        return prevCart.map((item) =>
+          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+        );
+      }
+      return [...prevCart, { ...product, quantity: 1 }];
+    });
+    showToast(`Added "${product.name}" to cart 🛒`);
+  };
+
+  const handleUpdateCartQuantity = (productId, newQty) => {
+    if (newQty <= 0) {
+      handleRemoveFromCart(productId);
+      return;
+    }
+    setCart((prevCart) =>
+      prevCart.map((item) => (item.id === productId ? { ...item, quantity: newQty } : item))
+    );
+  };
+
+  const handleRemoveFromCart = (productId) => {
+    setCart((prevCart) => prevCart.filter((item) => item.id !== productId));
+    showToast('Item removed from cart');
+  };
+
+  const handleClearCart = () => {
+    setCart([]);
+    showToast('Cart cleared');
+  };
+
   const handleOpenOrder = (product) => {
     setSelectedProduct(product);
     setActiveModal('order');
@@ -73,7 +120,6 @@ export default function App() {
   };
 
   const handleCustomOrderClick = () => {
-    // Open order modal with first featured product or custom placeholder
     setSelectedProduct(PRODUCTS[0]);
     setActiveModal('order');
   };
@@ -96,22 +142,22 @@ export default function App() {
     setActiveModal(null);
   };
 
+  const totalCartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+
   return (
     <div className="app-wrapper">
       
       {/* Navigation Header */}
       <Navbar
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
         selectedCategory={selectedCategory}
         setSelectedCategory={(catId) => {
           setSelectedCategory(catId);
           document.getElementById('products-catalog')?.scrollIntoView({ behavior: 'smooth' });
         }}
         wishlistCount={wishlist.length}
-        cartCount={orderHistory.length}
+        cartCount={totalCartCount}
         onOpenWishlist={() => setWishlistOpen(true)}
-        onOpenCart={() => setActiveModal('auth')}
+        onOpenCart={() => setCartOpen(true)}
         onOpenAuth={() => setActiveModal('auth')}
         onOpenCustomOrder={handleCustomOrderClick}
         user={user}
@@ -138,12 +184,9 @@ export default function App() {
         <ProductGrid
           selectedCategory={selectedCategory}
           setSelectedCategory={setSelectedCategory}
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
           onOrderNow={handleOpenOrder}
+          onAddToCart={handleAddToCart}
           onQuickView={handleOpenQuickView}
-          wishlist={wishlist}
-          onToggleWishlist={handleToggleWishlist}
         />
 
         <OfferBanner onCustomOrderClick={handleCustomOrderClick} />
@@ -194,6 +237,7 @@ export default function App() {
         onClose={() => setActiveModal(null)}
         product={selectedProduct}
         onOrderNow={handleOpenOrder}
+        onAddToCart={handleAddToCart}
         isWishlisted={selectedProduct ? wishlist.some((w) => w.id === selectedProduct.id) : false}
         onToggleWishlist={handleToggleWishlist}
       />
@@ -214,6 +258,18 @@ export default function App() {
         wishlist={wishlist}
         onRemoveFromWishlist={(id) => setWishlist(wishlist.filter((w) => w.id !== id))}
         onOrderNow={handleOpenOrder}
+        onAddToCart={handleAddToCart}
+      />
+
+      <CartDrawer
+        isOpen={cartOpen}
+        onClose={() => setCartOpen(false)}
+        cart={cart}
+        onUpdateQuantity={handleUpdateCartQuantity}
+        onRemoveFromCart={handleRemoveFromCart}
+        onClearCart={handleClearCart}
+        onOpenOrderModal={handleOpenOrder}
+        user={user}
       />
 
     </div>

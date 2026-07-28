@@ -1,9 +1,9 @@
-/* Footer.css - Exact Design Matching Image */
+/* Footer.css - Unified Typography & Clean Palette */
 
 /* Newsletter Subscription Bar */
 .newsletter-bar-wrapper {
   background: var(--coral-pink);
-  padding: 1.5rem 2rem;
+  padding: 1.75rem 2rem;
 }
 
 .newsletter-inner-container {
@@ -27,14 +27,14 @@
 }
 
 .newsletter-title-text {
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   font-weight: 700;
-  color: #ffffff
+  color: #ffffff;
 }
 
 .newsletter-sub-text {
-  font-size: 0.78rem;
-  color: #ffffff;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .newsletter-form-right {
@@ -49,35 +49,39 @@
   flex: 1;
   padding: 0.65rem 1rem;
   border-radius: var(--radius-sm);
-  border: 1px solid #e0e0e0;
-  background: #e0e0e0;
-  font-size: 0.8125rem;
+  border: 1px solid #ffffff;
+  background: #ffffff;
+  font-size: 0.85rem;
+  color: var(--neutral-dark);
 }
 .newsletter-input:focus {
   outline: none;
-  border-color: #ffffff
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
 }
 
 .btn-subscribe {
   padding: 0.65rem 1.4rem;
   border-radius: var(--radius-sm);
-  background:#e0e0e0;
-  color: var(--coral-pink);
-  font-size: 0.8125rem;
+  background: #2d2b2b;
+  color: #ffffff;
+  font-size: 0.85rem;
   font-weight: 600;
   white-space: nowrap;
+  border: none;
+  cursor: pointer;
   transition: var(--transition-smooth);
 }
 .btn-subscribe:hover {
-  background: var(--coral-pink-hover);
+  background: #000000;
+  transform: translateY(-1px);
 }
 
-/* Footer Section */
+/* Main Footer Section */
 .footer-main-section {
-  background:var(--coral-pink);
+  background: var(--coral-pink);
   padding-top: 3.5rem;
-  padding-bottom: 1.5rem;
-  border-top: 1px solid #ffffff
+  padding-bottom: 1.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .footer-inner-container {
@@ -88,36 +92,52 @@
 
 .footer-columns-grid {
   display: grid;
-  grid-template-columns: 1.8fr 1fr 1fr 1fr 1fr 1.2fr;
-  gap: 1.5rem;
+  grid-template-columns: 1.8fr 1fr 1fr 1fr 1fr;
+  gap: 2rem;
   padding-bottom: 2.5rem;
-  border-bottom: 1px solid #eeeeee;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .footer-col-title {
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color:  #ffffff;
-  margin-bottom: 1rem;
+  color: #ffffff;
+  margin-bottom: 1.1rem;
 }
 
 .footer-col-links {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
-  font-size: 0.78rem;
-  color: #2d2b2b;
+  gap: 0.55rem;
 }
 
-.footer-col-links a {
-  color: #2d2b2b;
-  transition: color 0.2s;
-}
-.footer-col-links a:hover {
+.footer-col-links a,
+.footer-col-links button {
   color: #ffffff;
+  font-size: 0.85rem;
+  font-weight: 400;
+  font-family: var(--font-sans);
+  text-decoration: none;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  text-align: left;
+  opacity: 0.9;
+  transition: all 0.2s ease;
+  display: inline-block;
+}
+
+.footer-col-links a:hover,
+.footer-col-links button:hover {
+  opacity: 1;
+  color: #ffffff;
+  text-decoration: underline;
+  transform: translateX(2px);
 }
 
 .footer-social-icons {
@@ -128,43 +148,27 @@
 }
 
 .social-circle-icon {
-  width: 1.8rem;
-  height: 1.8rem;
+  width: 2rem;
+  height: 2rem;
   border-radius: 50%;
-  background:#2d2b2b;
-  color:  #ffffff;
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: var(--transition-smooth);
 }
 .social-circle-icon:hover {
-  background: var(--coral-pink);
-  color: #ffffff;
-}
-
-.payment-badges-row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.4rem;
-}
-
-.pay-badge-pill {
-  padding: 0.25rem 0.5rem;
-  border-radius: 4px;
-  background: rgba(217, 94, 104, 0.25);
-  font-size: 0.7rem;
-  font-weight: 700;
-  color:  #ffffff;
-  border: 1px solid #e0e0e0;
+  background: #ffffff;
+  color: var(--coral-pink);
+  transform: translateY(-2px);
 }
 
 .footer-bottom-copyright {
   padding-top: 1.5rem;
   text-align: center;
-  font-size: 0.75rem;
-  color:#ffffff;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.9);
 }
 
 @media (max-width: 992px) {

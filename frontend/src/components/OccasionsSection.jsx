@@ -14,17 +14,18 @@ export default function OccasionsSection({ selectedCategory, setSelectedCategory
         <div className="title-heart-accent">♡</div>
       </div>
 
-      {/* Slider / Row */}
+      {/* 5 Cards Single Line Container */}
       <div className="occasions-slider-wrapper">
         <div className="occasions-cards-row">
           {occasionItems.map((occ) => (
             <div
               key={occ.id}
               onClick={() => setSelectedCategory(occ.id)}
-              className="occasion-item-card"
+              className={`occasion-item-card ${selectedCategory === occ.id ? 'active-occasion' : ''}`}
             >
               <div className="occasion-img-box">
                 <img src={occ.image} alt={occ.name} className="occasion-img" />
+                <span className="occasion-badge">{occ.badge || 'Popular'}</span>
               </div>
               <div className="occasion-info-box">
                 <h3 className="occasion-name-text">{occ.name}</h3>
@@ -33,8 +34,6 @@ export default function OccasionsSection({ selectedCategory, setSelectedCategory
             </div>
           ))}
         </div>
-
-       
       </div>
 
     </section>

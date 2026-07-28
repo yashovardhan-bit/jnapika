@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { Search, Heart, User, ShoppingBag, ChevronDown, Gift, Truck } from 'lucide-react';
+import { Search, Heart, User, ShoppingCart, ChevronDown, Gift } from 'lucide-react';
+import { OCCASIONS } from '../data/mockData';
 import './Navbar.css';
 
 export default function Navbar({ 
-  searchQuery, 
-  setSearchQuery, 
   selectedCategory, 
   setSelectedCategory,
   wishlistCount,
@@ -12,14 +11,32 @@ export default function Navbar({
   onOpenWishlist,
   onOpenCart,
   onOpenAuth,
-  onOpenCustomOrder
+  onOpenCustomOrder,
+  user
 }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  const handleOccasionClick = (catId) => {
+    setSelectedCategory(catId);
+    setDropdownOpen(false);
+    const el = document.getElementById('products-catalog');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const handleProductsClick = (e) => {
+    e.preventDefault();
+    setSelectedCategory('all');
+    const el = document.getElementById('products-catalog');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   return (
     <header className="navbar-header">
       
-
       {/* Main Glass Navbar */}
       <nav className="glass-nav-main">
         <div className="nav-container">
@@ -30,10 +47,10 @@ export default function Navbar({
               <span className="logo-script-title">Jnapika</span>
               <Gift size={22} color="#d95e68" />
             </div>
-            <p className="logo-tagline">Truning love and memories <br/>into beautiful,handmade keepsakes</p>
+            <p className="logo-tagline">Turning love and memories <br/>into beautiful, handmade keepsakes</p>
           </div>
 
-          {/* Center Navigation Links */}
+          {/* Center Navigation Links - Removed Shop & Blog, Added Products */}
           <div className="nav-center-links">
             <a 
               href="#home" 
@@ -42,12 +59,13 @@ export default function Navbar({
             >
               Home
             </a>
+
             <a 
               href="#products-catalog" 
-              className="nav-link-item"
-              onClick={() => setSelectedCategory('all')}
+              className={`nav-link-item ${selectedCategory !== 'all' ? 'active' : ''}`}
+              onClick={handleProductsClick}
             >
-              Shop
+              Products
             </a>
             
             <div 
@@ -55,43 +73,28 @@ export default function Navbar({
               onMouseEnter={() => setDropdownOpen(true)}
               onMouseLeave={() => setDropdownOpen(false)}
             >
-              <button className="nav-link-item" style={{ display: 'flex', alignItems: 'center', gap: '0.2rem' }}>
+              <button 
+                className={`nav-link-item ${selectedCategory !== 'all' ? 'active-occasion' : ''}`} 
+                style={{ display: 'flex', alignItems: 'center', gap: '0.2rem' }}
+              >
                 <span>Occasions</span>
                 <ChevronDown size={14} />
               </button>
 
               {dropdownOpen && (
-                <div style={{
-                  position: 'absolute',
-                  top: '100%',
-                  left: 0,
-                  width: '12rem',
-                  background: '#ffffff',
-                  boxShadow: '0 10px 25px rgba(0,0,0,0.1)',
-                  borderRadius: '8px',
-                  padding: '0.5rem 0',
-                  zIndex: 1100,
-                  border: '1px solid #fce8e6'
-                }}>
-                  {['gift cards','birthday book', 'vintage letters', 'bouquet','pencil art'].map((cat) => (
-                    <button
-                      key={cat}
-                      onClick={() => {
-                        setSelectedCategory(cat);
-                        setDropdownOpen(false);
-                      }}
-                      style={{
-                        width: '100%',
-                        textAlign: 'left',
-                        padding: '0.5rem 1rem',
-                        fontSize: '0.8125rem',
-                        color: selectedCategory === cat ? 'var(--coral-pink)' : 'var(--neutral-dark)',
-                        fontWeight: selectedCategory === cat ? 600 : 400
-                      }}
-                    >
-                      {cat.charAt(0).toUpperCase() + cat.slice(1)}
-                    </button>
-                  ))}
+                <div className="occasions-dropdown-menu">
+                  {OCCASIONS.filter(o => o.id !== 'all').map((cat) => {
+                    const isSelected = selectedCategory === cat.id;
+                    return (
+                      <button
+                        key={cat.id}
+                        onClick={() => handleOccasionClick(cat.id)}
+                        className={`dropdown-item-btn ${isSelected ? 'active-item' : ''}`}
+                      >
+                        {cat.name}
+                      </button>
+                    );
+                  })}
                 </div>
               )}
             </div>
@@ -101,7 +104,6 @@ export default function Navbar({
             </button>
 
             <a href="#about" className="nav-link-item">About Us</a>
-            <a href="#blog" className="nav-link-item">Blog</a>
             <a href="#contact" className="nav-link-item">Contact</a>
           </div>
 
@@ -114,7 +116,7 @@ export default function Navbar({
                 if (el) el.scrollIntoView({ behavior: 'smooth' });
               }} 
               className="nav-icon-btn"
-              title="Search"
+              title="Search Products"
             >
               <Search size={18} />
               <span>Search</span>
@@ -125,12 +127,23 @@ export default function Navbar({
               {wishlistCount > 0 && <span className="cart-count-badge">{wishlistCount}</span>}
             </button>
 
-            <button onClick={onOpenAuth} className="nav-icon-btn" title="Account">
-              <User size={19} />
-            </button>
+            {user ? (
+              <button onClick={onOpenAuth} className="nav-profile-btn-active" title={`Student Profile (${user.name})`}>
+                <div className="profile-avatar-circle">
+                  {user.name ? user.name.charAt(0).toUpperCase() : 'S'}
+                </div>
+                <span className="profile-name-text">{user.name ? user.name.split(' ')[0] : 'Student'}</span>
+              </button>
+            ) : (
+              <button onClick={onOpenAuth} className="nav-login-btn-pink">
+                <User size={16} />
+                <span>Login</span>
+              </button>
+            )}
 
-            <button onClick={onOpenCart} className="nav-icon-btn" title="Cart">
-              <ShoppingBag size={19} />
+            {/* Accurate Shopping Cart Icon with Badge Counter */}
+            <button onClick={onOpenCart} className="nav-icon-btn nav-cart-btn-highlight" title="Shopping Cart">
+              <ShoppingCart size={19} />
               <span className="cart-count-badge">{cartCount}</span>
             </button>
 

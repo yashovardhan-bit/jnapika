@@ -1,23 +1,47 @@
-/* QuickViewModal.css */
+/* QuickViewModal.css - Clean & Visible Controls */
 .quickview-dialog-box {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: var(--glass-blur);
-  border-radius: var(--radius-3xl);
+  background: #ffffff;
+  border-radius: var(--radius-xl, 20px);
   max-width: 48rem;
   width: 100%;
   overflow: hidden;
-  box-shadow: 0 25px 50px -12px rgba(168, 85, 247, 0.3);
-  border: 1.5px solid var(--pink-200);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  border: 1.5px solid var(--coral-pink-light, #fce8e6);
   max-height: 90vh;
   display: flex;
   flex-direction: row;
   position: relative;
 }
 
+.quickview-btn-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 30;
+  background: #ffffff;
+  border: 1.5px solid var(--coral-pink-light, #fce8e6);
+  color: var(--neutral-dark, #2d2b2b); /* Visible Black Exit Button */
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: var(--transition-smooth);
+}
+.quickview-btn-close:hover {
+  background: var(--coral-pink, #d95e68);
+  color: #ffffff;
+  border-color: var(--coral-pink, #d95e68);
+  transform: rotate(90deg);
+}
+
 .quickview-img-col {
   width: 50%;
   position: relative;
-  background: var(--pink-50);
+  background: var(--coral-pink-bg, #fff0ed);
 }
 
 .quickview-img {
@@ -28,12 +52,32 @@
 
 .quickview-info-col {
   width: 50%;
-  padding: 1.5rem;
+  padding: 1.75rem;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   gap: 1rem;
+  color: var(--neutral-dark, #2d2b2b);
+}
+
+.btn-add-cart-quick {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-md, 10px);
+  background: var(--coral-pink-bg, #fff0ed);
+  border: 1.5px solid var(--coral-pink, #d95e68);
+  color: var(--coral-pink, #d95e68);
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+.btn-add-cart-quick:hover {
+  background: var(--coral-pink, #d95e68);
+  color: #ffffff;
 }
 
 @media (max-width: 768px) {

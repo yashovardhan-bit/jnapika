@@ -14,3 +14,14 @@ logs/
 .vscode/
 .DS_Store
 *.swp
+
+# Secrets & Service Accounts
+service-account.json
+**/service-account.json
+.env
+.env.*
+
+# Exclude backend
+backend/
+
+

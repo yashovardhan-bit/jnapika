@@ -1,4 +1,4 @@
-/* Navbar.css - Exact Design Matching Image */
+/* Navbar.css - Clean Navbar with Dropdown & Active Highlighting */
 .navbar-header {
   position: sticky;
   top: 0;
@@ -7,48 +7,10 @@
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
 }
 
-.top-ticker {
-  background: var(--coral-pink);
-  color: #ffffff;
-  padding: 0.45rem 2rem;
-  font-size: 0.78rem;
-  font-weight: 500;
-}
-
-.top-ticker-container {
-  max-width: 80rem;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.top-ticker-left {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-}
-
-.top-ticker-right {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-}
-
-.top-ticker-right a {
-  color: #ffffff;
-  opacity: 0.95;
-  transition: opacity 0.2s;
-}
-.top-ticker-right a:hover {
-  opacity: 1;
-  text-decoration: underline;
-}
-
 .glass-nav-main {
-  background: var(--glass-bg-navbar);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(0, 0, 0, 0.06);
   padding: 0.8rem 2rem;
 }
@@ -67,7 +29,6 @@
   gap: 0.5rem;
   cursor: pointer;
 }
-
 
 .logo-script-title {
   font-family: var(--font-serif);
@@ -96,16 +57,24 @@
 .nav-link-item {
   position: relative;
   padding: 0.4rem 0;
+  background: none;
+  border: none;
+  color: var(--neutral-dark);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
   transition: color 0.2s;
 }
 .nav-link-item:hover {
   color: var(--coral-pink);
 }
-.nav-link-item.active {
+.nav-link-item.active,
+.nav-link-item.active-occasion {
   color: var(--coral-pink);
-  font-weight: 600;
+  font-weight: 700;
 }
-.nav-link-item.active::after {
+.nav-link-item.active::after,
+.nav-link-item.active-occasion::after {
   content: '';
   position: absolute;
   bottom: -2px;
@@ -114,6 +83,43 @@
   height: 2px;
   background: var(--coral-pink);
   border-radius: 2px;
+}
+
+/* Occasions Dropdown Menu */
+.occasions-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 13rem;
+  background: #ffffff;
+  box-shadow: 0 10px 30px rgba(217, 94, 104, 0.18);
+  border-radius: 12px;
+  padding: 0.5rem 0;
+  z-index: 1100;
+  border: 1.5px solid var(--coral-pink-light);
+  animation: fadeIn 0.2s ease-out;
+}
+
+.dropdown-item-btn {
+  width: 100%;
+  text-align: left;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.825rem;
+  color: var(--neutral-dark);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+.dropdown-item-btn:hover {
+  background: var(--coral-pink-bg);
+  color: var(--coral-pink);
+  padding-left: 1.4rem;
+}
+.dropdown-item-btn.active-item {
+  background: var(--coral-pink);
+  color: #ffffff;
+  font-weight: 700;
 }
 
 .nav-right-actions {
@@ -130,6 +136,9 @@
   font-weight: 500;
   color: var(--neutral-dark);
   position: relative;
+  background: none;
+  border: none;
+  cursor: pointer;
   transition: color 0.2s;
 }
 .nav-icon-btn:hover {
@@ -144,12 +153,73 @@
   color: #ffffff;
   font-size: 0.65rem;
   font-weight: 700;
-  width: 1.1rem;
-  height: 1.1rem;
+  width: 1.15rem;
+  height: 1.15rem;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 2px 6px rgba(217, 94, 104, 0.3);
+}
+
+.nav-login-btn-pink {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 1.1rem;
+  background: var(--coral-pink);
+  color: #ffffff;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: var(--radius-full);
+  box-shadow: 0 4px 12px rgba(217, 94, 104, 0.25);
+  border: none;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+.nav-login-btn-pink:hover {
+  background: var(--coral-pink-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(217, 94, 104, 0.35);
+}
+
+.nav-profile-btn-active {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.85rem 0.35rem 0.4rem;
+  background: var(--coral-pink-light);
+  border: 1.5px solid var(--coral-pink);
+  border-radius: var(--radius-full);
+  color: var(--coral-pink);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+.nav-profile-btn-active:hover {
+  background: #fbd9d7;
+  transform: translateY(-1px);
+}
+
+.profile-avatar-circle {
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 50%;
+  background: var(--coral-pink);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.profile-name-text {
+  max-width: 6rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 @media (max-width: 992px) {

@@ -1,23 +1,31 @@
-/* InstagramGallery.css - Exact Design Matching Image */
+/* InstagramGallery.css - Single Line Identical Row Layout */
 .insta-gallery-section {
-  max-width: 80rem;
+  max-width: 88rem;
   margin: 3.5rem auto;
-  padding: 0 2rem;
+  padding: 0 1.5rem;
 }
 
-.insta-photos-grid {
+.insta-photos-row {
   display: grid;
-  grid-template-columns: repeat(8, 1fr);
-  gap: 0.85rem;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 1.1rem;
 }
 
 .insta-photo-box {
+  position: relative;
   width: 100%;
   aspect-ratio: 1 / 1;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+  border: 1.5px solid rgba(217, 94, 104, 0.12);
+  display: block;
+  transition: var(--transition-smooth);
+}
+.insta-photo-box:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(217, 94, 104, 0.2);
+  border-color: var(--coral-pink);
 }
 
 .insta-photo-img {
@@ -30,44 +38,117 @@
   transform: scale(1.08);
 }
 
-.insta-callout-card {
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  border-radius: var(--radius-md);
-  background: #fce8e6;
+.insta-hover-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(217, 94, 104, 0.75);
+  backdrop-filter: blur(2px);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 0.4rem;
+  color: #ffffff;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.insta-photo-box:hover .insta-hover-overlay {
+  opacity: 1;
+}
+
+.insta-likes-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: rgba(0, 0, 0, 0.25);
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--radius-full);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+/* Identical 6th Callout Card */
+.insta-callout-card {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, #fdf2f4 0%, #fbe8eb 100%);
+  border: 1.5px solid var(--coral-pink);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.1rem 0.75rem;
   text-align: center;
-  padding: 0.5rem;
   color: var(--neutral-dark);
-  cursor: pointer;
+  text-decoration: none;
+  box-shadow: 0 4px 14px rgba(217, 94, 104, 0.15);
   transition: var(--transition-smooth);
 }
 .insta-callout-card:hover {
-  background: #f8dad8;
-  transform: translateY(-2px);
+  background: linear-gradient(135deg, var(--coral-pink) 0%, #c84d57 100%);
+  color: #ffffff;
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(217, 94, 104, 0.3);
 }
 
-.insta-callout-text {
-  font-size: 0.8125rem;
-  font-weight: 700;
+.insta-icon-badge {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #ffffff;
+  color: var(--coral-pink);
   display: flex;
   align-items: center;
-  gap: 0.3rem;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(217, 94, 104, 0.2);
+  transition: var(--transition-smooth);
+}
+.insta-callout-card:hover .insta-icon-badge {
+  background: #ffffff;
+  color: var(--coral-pink);
+  transform: scale(1.1);
+}
+
+.insta-callout-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.insta-callout-label {
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .insta-handle-text {
-  font-size: 0.78rem;
+  font-size: 0.85rem;
   font-weight: 700;
   color: var(--coral-pink);
-  margin-top: 0.2rem;
+}
+.insta-callout-card:hover .insta-handle-text {
+  color: #ffffff;
 }
 
-@media (max-width: 1024px) {
-  .insta-photos-grid { grid-template-columns: repeat(4, 1fr); }
+.insta-btn-follow {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.3rem 0.75rem;
+  border-radius: var(--radius-full);
+  background: var(--coral-pink);
+  color: #ffffff;
+  transition: var(--transition-smooth);
 }
-@media (max-width: 576px) {
-  .insta-photos-grid { grid-template-columns: repeat(2, 1fr); }
+.insta-callout-card:hover .insta-btn-follow {
+  background: #ffffff;
+  color: var(--coral-pink);
+}
+
+@media (max-width: 1200px) {
+  .insta-photos-row { grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+}
+@media (max-width: 640px) {
+  .insta-photos-row { grid-template-columns: repeat(2, 1fr); gap: 0.85rem; }
 }

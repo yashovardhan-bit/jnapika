@@ -25,7 +25,7 @@ const HERO_CARDS = [
     originalPrice: '₹1,199',
     badge: '🔥 Trending',
     image: image2,
-    category: 'anniversary'
+    category: 'photoframe'
   },
   {
     id: 3,
@@ -49,31 +49,68 @@ const HERO_CARDS = [
   }
 ];
 
+const VALUE_PROPS = [
+  { id: 'v1', Icon: Truck, title: 'Fast Delivery', desc: 'Quick & reliable shipping' },
+  { id: 'v2', Icon: Gift, title: 'Handpicked Gifts', desc: 'Unique & high quality' },
+  { id: 'v3', Icon: ShieldCheck, title: 'Secure Checkout', desc: '100% safe payments' },
+  { id: 'v4', Icon: Headphones, title: 'Customer Support', desc: "We're here to help you" },
+];
+
 export default function HeroBanner({ onExploreClick, onCustomOrderClick }) {
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(true);
   const [isPaused, setIsPaused] = useState(false);
+
+  // Clone first item to create smooth infinite forward loop [Card 1, Card 2, Card 3, Card 4, Card 1 Clone]
+  const extendedCards = [...HERO_CARDS, HERO_CARDS[0]];
 
   useEffect(() => {
     if (isPaused) return;
-    const interval = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % HERO_CARDS.length);
-    }, 3500);
-
-    return () => clearInterval(interval);
-  }, [isPaused]);
-
-  const handlePrev = () => {
-    setActiveIndex((prev) => (prev === 0 ? HERO_CARDS.length - 1 : prev - 1));
-  };
+    const timer = setInterval(() => {
+      handleNext();
+    }, 3200);
+    return () => clearInterval(timer);
+  }, [currentIndex, isPaused]);
 
   const handleNext = () => {
-    setActiveIndex((prev) => (prev + 1) % HERO_CARDS.length);
+    setCurrentIndex((prev) => prev + 1);
   };
+
+  const handlePrev = () => {
+    if (currentIndex === 0) {
+      setIsTransitioning(false);
+      setCurrentIndex(HERO_CARDS.length);
+      setTimeout(() => {
+        setIsTransitioning(true);
+        setCurrentIndex(HERO_CARDS.length - 1);
+      }, 30);
+    } else {
+      setCurrentIndex((prev) => prev - 1);
+    }
+  };
+
+  const handleTransitionEnd = () => {
+    if (currentIndex >= HERO_CARDS.length) {
+      setIsTransitioning(false);
+      setCurrentIndex(0);
+    }
+  };
+
+  useEffect(() => {
+    if (!isTransitioning) {
+      const timeout = setTimeout(() => {
+        setIsTransitioning(true);
+      }, 50);
+      return () => clearTimeout(timeout);
+    }
+  }, [isTransitioning]);
+
+  const activeDotIndex = currentIndex % HERO_CARDS.length;
 
   return (
     <section id="home" className="hero-section-root">
       
-      {/* Main Hero Banner */}
+      {/* Main Hero Banner Container */}
       <div className="hero-container">
         <div className="hero-inner-wrapper">
           
@@ -115,8 +152,11 @@ export default function HeroBanner({ onExploreClick, onCustomOrderClick }) {
                 {HERO_CARDS.map((card, i) => (
                   <button
                     key={card.id}
-                    onClick={() => setActiveIndex(i)}
-                    className={`dot-pill ${activeIndex === i ? 'active' : ''}`}
+                    onClick={() => {
+                      setIsTransitioning(true);
+                      setCurrentIndex(i);
+                    }}
+                    className={`dot-pill ${activeDotIndex === i ? 'active' : ''}`}
                     title={`Slide ${i + 1}: ${card.title}`}
                   />
                 ))}
@@ -128,7 +168,7 @@ export default function HeroBanner({ onExploreClick, onCustomOrderClick }) {
 
           </div>
 
-          {/* Right Sliding Cards Deck */}
+          {/* Right Full-Width Sliding Deck */}
           <div 
             className="hero-right-cards-deck"
             onMouseEnter={() => setIsPaused(true)}
@@ -137,10 +177,14 @@ export default function HeroBanner({ onExploreClick, onCustomOrderClick }) {
             <div className="cards-slider-viewport">
               <div 
                 className="cards-slider-track"
-                style={{ transform: `translateX(-${activeIndex * 100}%)` }}
+                onTransitionEnd={handleTransitionEnd}
+                style={{ 
+                  transform: `translateX(-${currentIndex * 100}%)`,
+                  transition: isTransitioning ? 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)' : 'none'
+                }}
               >
-                {HERO_CARDS.map((card, i) => (
-                  <div key={card.id} className="hero-sliding-card">
+                {extendedCards.map((card, i) => (
+                  <div key={`${card.id}-${i}`} className="hero-sliding-card">
                     <div className="hero-card-img-wrapper">
                       <img
                         src={card.image}
@@ -173,7 +217,7 @@ export default function HeroBanner({ onExploreClick, onCustomOrderClick }) {
               </div>
             </div>
 
-            {/* Quick Arrow Controls over Image */}
+            {/* Quick Arrow Overlay Controls */}
             <button onClick={handlePrev} className="deck-arrow-btn left" title="Previous">
               <ChevronLeft size={20} />
             </button>
@@ -186,50 +230,23 @@ export default function HeroBanner({ onExploreClick, onCustomOrderClick }) {
         </div>
       </div>
 
-      {/* 4 Feature Value Props Bar */}
+      {/* 4 Feature Value Props Bar (Horizontal Looping Marquee Ticker on Mobile) */}
       <div className="feature-values-section">
         <div className="feature-cards-grid">
-          
-          <div className="value-card-item">
-            <div className="value-card-icon">
-              <Truck size={26} />
-            </div>
-            <div>
-              <h4 className="value-card-title">Fast Delivery</h4>
-              <p className="value-card-desc">Quick & reliable shipping</p>
-            </div>
-          </div>
-
-          <div className="value-card-item">
-            <div className="value-card-icon">
-              <Gift size={26} />
-            </div>
-            <div>
-              <h4 className="value-card-title">Handpicked Gifts</h4>
-              <p className="value-card-desc">Unique & high quality</p>
-            </div>
-          </div>
-
-          <div className="value-card-item">
-            <div className="value-card-icon">
-              <ShieldCheck size={26} />
-            </div>
-            <div>
-              <h4 className="value-card-title">Secure Checkout</h4>
-              <p className="value-card-desc">100% safe payments</p>
-            </div>
-          </div>
-
-          <div className="value-card-item">
-            <div className="value-card-icon">
-              <Headphones size={26} />
-            </div>
-            <div>
-              <h4 className="value-card-title">Customer Support</h4>
-              <p className="value-card-desc">We're here to help you</p>
-            </div>
-          </div>
-
+          {[...VALUE_PROPS, ...VALUE_PROPS].map((item, idx) => {
+            const IconComp = item.Icon;
+            return (
+              <div key={`${item.id}-${idx}`} className="value-card-item">
+                <div className="value-card-icon">
+                  <IconComp size={22} />
+                </div>
+                <div>
+                  <h4 className="value-card-title">{item.title}</h4>
+                  <p className="value-card-desc">{item.desc}</p>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
 

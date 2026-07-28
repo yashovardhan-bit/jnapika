@@ -15,6 +15,15 @@ export const CATEGORIES = [
     badge: 'Popular'
   },
   {
+    id: 'personalized',
+    name: 'Personalized Gifts',
+    icon: 'Sparkles',
+    count: '16 Items',
+    description: 'Custom letters, photo frames, photo cards & personalized keepsakes',
+    image: img6,
+    badge: 'Custom'
+  },
+  {
     id: 'vintageletters',
     name: 'Vintage Letters',
     icon: 'Heart',
@@ -23,6 +32,7 @@ export const CATEGORIES = [
     image: img6,
     badge: 'Romantic'
   },
+
   {
     id: 'photoframe',
     name: 'Photo Frames',

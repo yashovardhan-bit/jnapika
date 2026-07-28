@@ -1,5 +1,6 @@
 import React from 'react';
 import { Gift } from 'lucide-react';
+import { CATEGORIES } from '../data/mockData';
 import './Footer.css';
 
 const InstagramIcon = ({ size = 15 }) => (
@@ -32,20 +33,19 @@ const YoutubeIcon = ({ size = 15 }) => (
 
 export default function Footer({ onSelectCategory, onOpenCustomOrder }) {
   return (
-    <footer>
-      {/* Main Footer Links */}
+    <footer className="footer-root-container">
       <div className="footer-main-section">
         <div className="footer-inner-container">
           
           <div className="footer-columns-grid">
             
-            {/* Brand Info */}
+            {/* Brand Info - Centered on Mobile */}
             <div className="footer-brand-col">
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.3rem', color: 'white' }}>
-                <span style={{ fontSize: '1.8rem', fontFamily: 'var(--font-serif)', fontWeight: 700 }}>Jnapika</span>
+              <div className="footer-brand-title">
+                <span className="footer-brand-name">Jnapika</span>
                 <Gift size={22} color="#ffffff" />
               </div>
-              <p style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.9)', fontStyle: 'italic', marginBottom: '1rem' }}>
+              <p className="footer-brand-tagline">
                 Turning love and memories into beautiful, handmade keepsakes.
               </p>
 
@@ -66,61 +66,59 @@ export default function Footer({ onSelectCategory, onOpenCustomOrder }) {
             </div>
 
             {/* PRODUCTS */}
-            <div>
+            <div className="footer-section-block">
               <h4 className="footer-col-title">PRODUCTS</h4>
-              <ul className="footer-col-links">
+              <ul className="footer-col-links inline-mobile">
                 <li><button onClick={() => onSelectCategory('all')}>All Products</button></li>
                 <li><button onClick={() => onSelectCategory('all')}>New Arrivals</button></li>
                 <li><button onClick={() => onSelectCategory('all')}>Bestsellers</button></li>
                 <li><button onClick={onOpenCustomOrder}>Personalized Gifts</button></li>
-                <li><button onClick={() => onSelectCategory('giftcard')}>Gift Cards</button></li>
               </ul>
             </div>
 
-            {/* OCCASIONS */}
-            <div>
-              <h4 className="footer-col-title">OCCASIONS</h4>
-              <ul className="footer-col-links">
-                <li><button onClick={() => onSelectCategory('giftcard')}>Gift Cards</button></li>
-                <li><button onClick={() => onSelectCategory('birthdaybook')}>Birthday Book</button></li>
-                <li><button onClick={() => onSelectCategory('vintageletters')}>Vintage Letters</button></li>
-                <li><button onClick={() => onSelectCategory('bouquet')}>Bouquet</button></li>
-                <li><button onClick={() => onSelectCategory('pencilart')}>Pencil Art</button></li>
+            {/* CATEGORIES - Horizontal Inline Format on Mobile */}
+            <div className="footer-section-block">
+              <h4 className="footer-col-title">CATEGORIES</h4>
+              <ul className="footer-col-links inline-mobile categories-inline-list">
+                {CATEGORIES.map((cat) => (
+                  <li key={cat.id}>
+                    <button onClick={() => onSelectCategory(cat.id)}>
+                      {cat.name}
+                    </button>
+                  </li>
+                ))}
               </ul>
             </div>
 
             {/* HELP */}
-            <div>
+            <div className="footer-section-block">
               <h4 className="footer-col-title">HELP</h4>
-              <ul className="footer-col-links">
+              <ul className="footer-col-links inline-mobile">
                 <li><a href="#faqs">FAQs</a></li>
-                <li><a href="#shipping">Shipping & Delivery</a></li>
-                <li><a href="#returns">Returns & Refunds</a></li>
+                <li><a href="#shipping">Shipping</a></li>
                 <li><a href="#track">Track Order</a></li>
                 <li><a href="#contact">Contact Us</a></li>
               </ul>
             </div>
 
             {/* ABOUT */}
-            <div>
+            <div className="footer-section-block">
               <h4 className="footer-col-title">ABOUT</h4>
-              <ul className="footer-col-links">
+              <ul className="footer-col-links inline-mobile">
                 <li><a href="#about">About Us</a></li>
                 <li><a href="#story">Our Story</a></li>
-                <li><a href="#privacy">Privacy Policy</a></li>
-                <li><a href="#terms">Terms & Conditions</a></li>
+                <li><a href="#privacy">Privacy</a></li>
               </ul>
             </div>
 
           </div>
 
           <div className="footer-bottom-copyright">
-            © 2024 Jnapika. All rights reserved. Crafted with ♡ for special memories.
+            © 2024 Jnapika. All rights reserved. Handcrafted with ♡ for memories.
           </div>
 
         </div>
       </div>
-
     </footer>
   );
 }

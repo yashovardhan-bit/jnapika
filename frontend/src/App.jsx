@@ -56,8 +56,14 @@ export default function App() {
   
   const [user, setUser] = useState(() => {
     const saved = localStorage.getItem('jnapika_user');
-    return saved ? JSON.parse(saved) : null;
+    return saved ? JSON.parse(saved) : {
+      name: 'Yaso Vardhan',
+      email: 's220123@rguktsklm.ac.in',
+      phone: '+91 98765 43210',
+      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=400&auto=format&fit=crop'
+    };
   });
+
 
   useEffect(() => {
     localStorage.setItem('jnapika_wishlist', JSON.stringify(wishlist));
@@ -133,11 +139,12 @@ export default function App() {
   };
 
   const handlePersonalizedGiftsClick = () => {
-    setSelectedCategory('vintageletters');
+    setSelectedCategory('personalized');
     const el = document.getElementById('products-catalog');
     if (el) el.scrollIntoView({ behavior: 'smooth' });
     showToast('Showing Personalized Gifts & Custom Keepsakes', 'info');
   };
+
 
   const handleOrderPlaced = (newOrder) => {
     setOrderHistory([newOrder, ...orderHistory]);

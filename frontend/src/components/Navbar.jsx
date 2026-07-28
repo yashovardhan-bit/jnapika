@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Search, Heart, User, ShoppingCart, ChevronDown, Gift } from 'lucide-react';
-import { OCCASIONS } from '../data/mockData';
+import { CATEGORIES } from '../data/mockData';
 import './Navbar.css';
 
 export default function Navbar({ 
@@ -12,11 +12,14 @@ export default function Navbar({
   onOpenCart,
   onOpenAuth,
   onOpenCustomOrder,
+  onOpenSearch,
+  onOpenAbout,
+  onOpenContact,
   user
 }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
-  const handleOccasionClick = (catId) => {
+  const handleCategoryClick = (catId) => {
     setSelectedCategory(catId);
     setDropdownOpen(false);
     const el = document.getElementById('products-catalog');
@@ -50,7 +53,7 @@ export default function Navbar({
             <p className="logo-tagline">Turning love and memories <br/>into beautiful, handmade keepsakes</p>
           </div>
 
-          {/* Center Navigation Links - Removed Shop & Blog, Added Products */}
+          {/* Center Navigation Links */}
           <div className="nav-center-links">
             <a 
               href="#home" 
@@ -68,6 +71,7 @@ export default function Navbar({
               Products
             </a>
             
+            {/* Categories Dropdown (Changed from Occasions to Categories) */}
             <div 
               style={{ position: 'relative' }} 
               onMouseEnter={() => setDropdownOpen(true)}
@@ -77,18 +81,18 @@ export default function Navbar({
                 className={`nav-link-item ${selectedCategory !== 'all' ? 'active-occasion' : ''}`} 
                 style={{ display: 'flex', alignItems: 'center', gap: '0.2rem' }}
               >
-                <span>Occasions</span>
+                <span>Categories</span>
                 <ChevronDown size={14} />
               </button>
 
               {dropdownOpen && (
                 <div className="occasions-dropdown-menu">
-                  {OCCASIONS.filter(o => o.id !== 'all').map((cat) => {
+                  {CATEGORIES.filter(c => c.id !== 'all').map((cat) => {
                     const isSelected = selectedCategory === cat.id;
                     return (
                       <button
                         key={cat.id}
-                        onClick={() => handleOccasionClick(cat.id)}
+                        onClick={() => handleCategoryClick(cat.id)}
                         className={`dropdown-item-btn ${isSelected ? 'active-item' : ''}`}
                       >
                         {cat.name}
@@ -103,36 +107,47 @@ export default function Navbar({
               Personalized Gifts
             </button>
 
-            <a href="#about" className="nav-link-item">About Us</a>
-            <a href="#contact" className="nav-link-item">Contact</a>
+            {/* About Us Dialog Trigger */}
+            <button onClick={onOpenAbout} className="nav-link-item">
+              About Us
+            </button>
+
+            {/* Contact Dialog Trigger */}
+            <button onClick={onOpenContact} className="nav-link-item">
+              Contact
+            </button>
           </div>
 
           {/* Right Action Icons */}
           <div className="nav-right-actions">
             
+            {/* Interactive Search Bar Trigger */}
             <button 
-              onClick={() => {
-                const el = document.getElementById('products-catalog');
-                if (el) el.scrollIntoView({ behavior: 'smooth' });
-              }} 
-              className="nav-icon-btn"
+              onClick={onOpenSearch} 
+              className="nav-icon-btn nav-search-trigger"
               title="Search Products"
             >
               <Search size={18} />
               <span>Search</span>
             </button>
 
+            {/* Wishlist Button */}
             <button onClick={onOpenWishlist} className="nav-icon-btn" title="Wishlist">
               <Heart size={19} />
               {wishlistCount > 0 && <span className="cart-count-badge">{wishlistCount}</span>}
             </button>
 
+            {/* Login / Profile Button Switch */}
             {user ? (
               <button onClick={onOpenAuth} className="nav-profile-btn-active" title={`Student Profile (${user.name})`}>
-                <div className="profile-avatar-circle">
-                  {user.name ? user.name.charAt(0).toUpperCase() : 'S'}
-                </div>
-                <span className="profile-name-text">{user.name ? user.name.split(' ')[0] : 'Student'}</span>
+                {user.avatar ? (
+                  <img src={user.avatar} alt={user.name} className="nav-profile-thumb" />
+                ) : (
+                  <div className="profile-avatar-circle">
+                    {user.name ? user.name.charAt(0).toUpperCase() : 'S'}
+                  </div>
+                )}
+                <span className="profile-name-text">Profile</span>
               </button>
             ) : (
               <button onClick={onOpenAuth} className="nav-login-btn-pink">
@@ -141,7 +156,7 @@ export default function Navbar({
               </button>
             )}
 
-            {/* Accurate Shopping Cart Icon with Badge Counter */}
+            {/* Shopping Cart Button */}
             <button onClick={onOpenCart} className="nav-icon-btn nav-cart-btn-highlight" title="Shopping Cart">
               <ShoppingCart size={19} />
               <span className="cart-count-badge">{cartCount}</span>

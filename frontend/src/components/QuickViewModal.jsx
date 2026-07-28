@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { X, Star, Heart, ShoppingBag, ShoppingCart, Check } from 'lucide-react';
 import './QuickViewModal.css';
 
@@ -11,7 +11,9 @@ export default function QuickViewModal({
   isWishlisted, 
   onToggleWishlist 
 }) {
+  const [customText, setCustomText] = useState('');
   if (!isOpen || !product) return null;
+
 
   return (
     <div className="modal-overlay" onClick={onClose}>
@@ -60,25 +62,38 @@ export default function QuickViewModal({
               {product.description}
             </p>
 
+            {/* Material & Delivery Info */}
             <div style={{ paddingTop: '0.5rem', borderTop: '1px solid #f1f5f9', fontSize: '0.8rem', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
               <div>
                 <strong>Material: </strong>
                 <span>{product.material}</span>
               </div>
+              <div>
+                <strong>Est. Delivery: </strong>
+                <span>{product.deliveryTime || '24-48 Hours'}</span>
+              </div>
+            </div>
 
-              {product.features && (
-                <div>
-                  <strong style={{ display: 'block', marginBottom: '0.2rem' }}>Highlights:</strong>
-                  <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-                    {product.features.map((feat, idx) => (
-                      <li key={idx} style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', color: 'var(--neutral-dark)' }}>
-                        <Check size={12} color="#059669" />
-                        <span>{feat}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
+            {/* Customization Request Text Area */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem', marginTop: '0.2rem' }}>
+              <label style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--coral-pink)' }}>
+                ✨ Customization Instructions / Notes:
+              </label>
+              <textarea
+                rows={2}
+                placeholder="Describe how you need customization (e.g. message for handwritten letter, names to engrave/print, photo placement)..."
+                value={customText}
+                onChange={(e) => setCustomText(e.target.value)}
+                style={{
+                  width: '100%',
+                  padding: '0.55rem 0.75rem',
+                  borderRadius: 'var(--radius-md)',
+                  border: '1.5px solid rgba(217, 94, 104, 0.25)',
+                  fontSize: '0.8rem',
+                  outline: 'none',
+                  resize: 'none'
+                }}
+              />
             </div>
           </div>
 
@@ -86,7 +101,7 @@ export default function QuickViewModal({
             <button
               onClick={() => {
                 onClose();
-                onOrderNow(product);
+                onOrderNow({ ...product, customNotes: customText });
               }}
               className="btn-order-card"
               style={{ flex: 1, padding: '0.75rem', justifyContent: 'center' }}
@@ -97,7 +112,7 @@ export default function QuickViewModal({
 
             <button
               onClick={() => {
-                if (onAddToCart) onAddToCart(product);
+                if (onAddToCart) onAddToCart({ ...product, customNotes: customText });
               }}
               className="btn-add-cart-quick"
               title="Add to Cart"
@@ -105,6 +120,7 @@ export default function QuickViewModal({
               <ShoppingCart size={16} />
               <span>Add to Cart</span>
             </button>
+
 
             <button
               onClick={() => onToggleWishlist(product)}

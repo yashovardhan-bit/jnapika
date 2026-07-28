@@ -10,9 +10,10 @@ export default function OccasionsSection({ selectedCategory, setSelectedCategory
       
       {/* Title */}
       <div className="section-header-title-box">
-        <h2 className="section-main-title">SHOP BY OCCASION</h2>
+        <h2 className="section-main-title">SHOP BY CATEGORIES</h2>
         <div className="title-heart-accent">♡</div>
       </div>
+
 
       {/* 5 Cards Single Line Container */}
       <div className="occasions-slider-wrapper">

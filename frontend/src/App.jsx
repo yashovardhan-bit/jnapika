@@ -13,6 +13,10 @@ import QuickViewModal from './components/QuickViewModal';
 import AuthModal from './components/AuthModal';
 import WishlistDrawer from './components/WishlistDrawer';
 import CartDrawer from './components/CartDrawer';
+import SearchBarModal from './components/SearchBarModal';
+import AboutUsModal from './components/AboutUsModal';
+import ContactUsModal from './components/ContactUsModal';
+import Toast from './components/Toast';
 
 import { STORE_INFO, PRODUCTS } from './data/mockData';
 import { MessageCircle } from 'lucide-react';
@@ -39,9 +43,16 @@ export default function App() {
 
   const [activeModal, setActiveModal] = useState(null); // 'order' | 'quickview' | 'auth'
   const [selectedProduct, setSelectedProduct] = useState(null);
+  
+  // Dialog States
   const [wishlistOpen, setWishlistOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
-  const [toastMessage, setToastMessage] = useState('');
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [aboutOpen, setAboutOpen] = useState(false);
+  const [contactOpen, setContactOpen] = useState(false);
+
+  // Toast Notification State: { text: string, type: 'cart' | 'wishlist' | 'order' }
+  const [toast, setToast] = useState(null);
   
   const [user, setUser] = useState(() => {
     const saved = localStorage.getItem('jnapika_user');
@@ -60,19 +71,19 @@ export default function App() {
     localStorage.setItem('jnapika_orders', JSON.stringify(orderHistory));
   }, [orderHistory]);
 
-  const showToast = (msg) => {
-    setToastMessage(msg);
-    setTimeout(() => setToastMessage(''), 3000);
+  const showToast = (text, type = 'info') => {
+    setToast({ text, type });
+    setTimeout(() => setToast(null), 3200);
   };
 
   const handleToggleWishlist = (product) => {
     const exists = wishlist.some((item) => item.id === product.id);
     if (exists) {
       setWishlist(wishlist.filter((item) => item.id !== product.id));
-      showToast(`Removed "${product.name}" from wishlist`);
+      showToast(`Removed "${product.name}" from wishlist`, 'wishlist');
     } else {
       setWishlist([...wishlist, product]);
-      showToast(`Added "${product.name}" to wishlist ❤️`);
+      showToast(`Added "${product.name}" to wishlist`, 'wishlist');
     }
   };
 
@@ -81,12 +92,14 @@ export default function App() {
       const existing = prevCart.find((item) => item.id === product.id);
       if (existing) {
         return prevCart.map((item) =>
-          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+          item.id === product.id
+            ? { ...item, quantity: item.quantity + 1, customNotes: product.customNotes || item.customNotes }
+            : item
         );
       }
       return [...prevCart, { ...product, quantity: 1 }];
     });
-    showToast(`Added "${product.name}" to cart 🛒`);
+    showToast(`Added "${product.name}" to cart`, 'cart');
   };
 
   const handleUpdateCartQuantity = (productId, newQty) => {
@@ -101,12 +114,12 @@ export default function App() {
 
   const handleRemoveFromCart = (productId) => {
     setCart((prevCart) => prevCart.filter((item) => item.id !== productId));
-    showToast('Item removed from cart');
+    showToast('Item removed from cart', 'cart');
   };
 
   const handleClearCart = () => {
     setCart([]);
-    showToast('Cart cleared');
+    showToast('Cart cleared', 'cart');
   };
 
   const handleOpenOrder = (product) => {
@@ -119,27 +132,37 @@ export default function App() {
     setActiveModal('quickview');
   };
 
-  const handleCustomOrderClick = () => {
-    setSelectedProduct(PRODUCTS[0]);
-    setActiveModal('order');
+  const handlePersonalizedGiftsClick = () => {
+    setSelectedCategory('vintageletters');
+    const el = document.getElementById('products-catalog');
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+    showToast('Showing Personalized Gifts & Custom Keepsakes', 'info');
   };
 
   const handleOrderPlaced = (newOrder) => {
     setOrderHistory([newOrder, ...orderHistory]);
-    showToast('Order generated! Please complete sending via WhatsApp.');
+    showToast('Order generated! Send via WhatsApp now.', 'order');
   };
 
   const handleLoginSuccess = (userData) => {
     setUser(userData);
     localStorage.setItem('jnapika_user', JSON.stringify(userData));
-    showToast(`Welcome back, ${userData.name}!`);
+    showToast(`Welcome back, ${userData.name}!`, 'info');
   };
 
   const handleLogout = () => {
     setUser(null);
     localStorage.removeItem('jnapika_user');
-    showToast('Signed out successfully.');
+    showToast('Logged out successfully.', 'info');
     setActiveModal(null);
+  };
+
+  const handleKeywordSearch = (keyword) => {
+    setSearchQuery(keyword);
+    setSelectedCategory('all');
+    setSearchOpen(false);
+    const el = document.getElementById('products-catalog');
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
 
   const totalCartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
@@ -159,7 +182,10 @@ export default function App() {
         onOpenWishlist={() => setWishlistOpen(true)}
         onOpenCart={() => setCartOpen(true)}
         onOpenAuth={() => setActiveModal('auth')}
-        onOpenCustomOrder={handleCustomOrderClick}
+        onOpenCustomOrder={handlePersonalizedGiftsClick}
+        onOpenSearch={() => setSearchOpen(true)}
+        onOpenAbout={() => setAboutOpen(true)}
+        onOpenContact={() => setContactOpen(true)}
         user={user}
       />
 
@@ -170,7 +196,7 @@ export default function App() {
             setSelectedCategory('all');
             document.getElementById('products-catalog')?.scrollIntoView({ behavior: 'smooth' });
           }}
-          onCustomOrderClick={handleCustomOrderClick}
+          onCustomOrderClick={handlePersonalizedGiftsClick}
         />
 
         <OccasionsSection
@@ -189,7 +215,7 @@ export default function App() {
           onQuickView={handleOpenQuickView}
         />
 
-        <OfferBanner onCustomOrderClick={handleCustomOrderClick} />
+        <OfferBanner onCustomOrderClick={handlePersonalizedGiftsClick} />
 
         <ReviewsSection />
 
@@ -202,7 +228,7 @@ export default function App() {
           setSelectedCategory(catId);
           document.getElementById('products-catalog')?.scrollIntoView({ behavior: 'smooth' });
         }}
-        onOpenCustomOrder={handleCustomOrderClick}
+        onOpenCustomOrder={handlePersonalizedGiftsClick}
       />
 
       {/* Floating WhatsApp Action Button */}
@@ -216,14 +242,34 @@ export default function App() {
         <MessageCircle size={24} />
       </a>
 
-      {/* Toast Notification */}
-      {toastMessage && (
-        <div className="toast-popup">
-          <span>{toastMessage}</span>
-        </div>
-      )}
+      {/* Popup Notification Toast (White background, black text, green tick & icon at bottom) */}
+      <Toast toast={toast} />
 
-      {/* Modals & Drawers */}
+      {/* Modals & Dialogs */}
+      <SearchBarModal
+        isOpen={searchOpen}
+        onClose={() => setSearchOpen(false)}
+        onSelectKeyword={handleKeywordSearch}
+        onSelectProduct={(product) => {
+          setSearchOpen(false);
+          handleOpenQuickView(product);
+        }}
+      />
+
+      <AboutUsModal
+        isOpen={aboutOpen}
+        onClose={() => setAboutOpen(false)}
+        onExploreProducts={() => {
+          setSelectedCategory('all');
+          document.getElementById('products-catalog')?.scrollIntoView({ behavior: 'smooth' });
+        }}
+      />
+
+      <ContactUsModal
+        isOpen={contactOpen}
+        onClose={() => setContactOpen(false)}
+      />
+
       <OrderModal
         isOpen={activeModal === 'order'}
         onClose={() => setActiveModal(null)}

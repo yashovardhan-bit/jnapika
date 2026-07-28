@@ -1,74 +1,85 @@
-import React, { useState } from 'react';
-import { X, User, CheckCircle2, Package } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { X, User, CheckCircle2, Edit3, LogOut, Camera } from 'lucide-react';
 import './AuthModal.css';
 
-export default function AuthModal({ isOpen, onClose, user, onLoginSuccess, onLogout, orderHistory, wishlist }) {
+const DEFAULT_AVATARS = [
+  'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop',
+  'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop',
+  'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200&auto=format&fit=crop',
+  'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=200&auto=format&fit=crop'
+];
+
+export default function AuthModal({ isOpen, onClose, user, onLoginSuccess, onLogout }) {
   if (!isOpen) return null;
 
-  const [mode, setMode] = useState(user ? 'profile' : 'login');
+  const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
-    name: user ? user.name : '',
-    email: user ? user.email : '',
-    phone: user ? user.phone : '',
-    password: '',
-    confirmPassword: ''
+    name: user?.name || '',
+    email: user?.email || '',
+    phone: user?.phone || '',
+    avatar: user?.avatar || DEFAULT_AVATARS[0]
   });
 
   const [message, setMessage] = useState('');
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (mode === 'login') {
-      if (!formData.email || !formData.password) {
-        setMessage('Please enter your email and password');
-        return;
-      }
-      onLoginSuccess({
-        name: formData.name || formData.email.split('@')[0],
-        email: formData.email,
-        phone: formData.phone || '+91 9876543210'
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        name: user.name || '',
+        email: user.email || '',
+        phone: user.phone || '',
+        avatar: user.avatar || DEFAULT_AVATARS[0]
       });
-      setMessage('Successfully logged in!');
-      setTimeout(() => {
-        setMessage('');
-        onClose();
-      }, 1000);
-    } else if (mode === 'register') {
-      if (formData.password !== formData.confirmPassword) {
-        setMessage('Passwords do not match');
-        return;
-      }
-      onLoginSuccess({
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone
-      });
-      setMessage('Account registered successfully!');
-      setTimeout(() => {
-        setMessage('');
-        onClose();
-      }, 1000);
-    } else if (mode === 'forgot') {
-      setMessage('Password reset link sent to your email!');
-      setTimeout(() => setMode('login'), 2000);
     }
+  }, [user]);
+
+  const handleLoginSubmit = (e) => {
+    e.preventDefault();
+    if (!formData.name || !formData.email || !formData.phone) {
+      setMessage('Please fill in your Name, Email, and Phone number.');
+      return;
+    }
+    const userData = {
+      name: formData.name,
+      email: formData.email,
+      phone: formData.phone,
+      avatar: formData.avatar
+    };
+    onLoginSuccess(userData);
+    setMessage('Logged in successfully!');
+    setTimeout(() => {
+      setMessage('');
+      onClose();
+    }, 800);
+  };
+
+  const handleProfileSave = (e) => {
+    e.preventDefault();
+    const updatedUser = {
+      ...user,
+      name: formData.name,
+      email: formData.email,
+      phone: formData.phone,
+      avatar: formData.avatar
+    };
+    onLoginSuccess(updatedUser);
+    setIsEditing(false);
+    setMessage('Profile updated successfully!');
+    setTimeout(() => setMessage(''), 1500);
   };
 
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="auth-dialog-box" onClick={(e) => e.stopPropagation()}>
         
-        {/* Header */}
+        {/* Header - Heading is "Login" when not logged in, "Profile" when logged in */}
         <div className="auth-modal-header">
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
             <div className="auth-header-icon-bg">
               <User size={18} color="#d95e68" />
             </div>
             <h3 className="auth-modal-title">
-              {mode === 'profile' && 'My Student Profile'}
-              {mode === 'login' && 'Student Sign In'}
-              {mode === 'register' && 'Create Student Account'}
-              {mode === 'forgot' && 'Reset Password'}
+              {user ? 'Profile' : 'Login'}
             </h3>
           </div>
           <button onClick={onClose} className="auth-btn-close" title="Close modal">
@@ -81,63 +92,142 @@ export default function AuthModal({ isOpen, onClose, user, onLoginSuccess, onLog
           
           {message && (
             <div className="auth-alert-success">
-              <CheckCircle2 size={16} />
+              <CheckCircle2 size={16} color="#10B981" />
               <span>{message}</span>
             </div>
           )}
 
-          {mode === 'profile' ? (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-              <div className="auth-profile-card">
-                <h4 className="auth-profile-name">{user?.name}</h4>
-                <p className="auth-profile-detail">📧 {user?.email}</p>
-                <p className="auth-profile-detail">📱 {user?.phone}</p>
-              </div>
-
-              <div>
-                <h5 className="auth-section-title">
-                  <Package size={15} color="#d95e68" /> Previous Orders ({orderHistory?.length || 0})
-                </h5>
-                {orderHistory && orderHistory.length > 0 ? (
-                  <div className="auth-orders-list">
-                    {orderHistory.map((ord, i) => (
-                      <div key={i} className="auth-order-item">
-                        <div>
-                          <p className="auth-order-prod">{ord.product.name}</p>
-                          <p className="auth-order-sub">{ord.date} • Qty: {ord.formData.quantity}</p>
-                        </div>
-                        <span className="auth-order-price">₹{ord.totalPrice}</span>
-                      </div>
-                    ))}
+          {user ? (
+            /* Logged In View - Student Profile */
+            <div className="profile-container">
+              
+              {/* Profile Avatar Header */}
+              <div className="profile-avatar-wrapper">
+                <img
+                  src={formData.avatar || DEFAULT_AVATARS[0]}
+                  alt={user.name}
+                  className="profile-avatar-image"
+                />
+                {isEditing && (
+                  <div className="avatar-picker-row">
+                    <span className="avatar-picker-label">Choose Avatar:</span>
+                    <div className="avatar-options-grid">
+                      {DEFAULT_AVATARS.map((img, idx) => (
+                        <img
+                          key={idx}
+                          src={img}
+                          alt="avatar option"
+                          className={`avatar-option-thumb ${formData.avatar === img ? 'selected' : ''}`}
+                          onClick={() => setFormData({ ...formData, avatar: img })}
+                        />
+                      ))}
+                    </div>
                   </div>
-                ) : (
-                  <p className="auth-no-orders">No previous orders yet.</p>
                 )}
               </div>
 
-              <div className="auth-profile-footer">
-                <span className="auth-wishlist-count">Wishlist items: {wishlist?.length || 0}</span>
-                <button onClick={onLogout} className="auth-btn-logout">
-                  Sign Out
-                </button>
-              </div>
+              {!isEditing ? (
+                /* Display Mode */
+                <div className="profile-details-card">
+                  <h4 className="profile-user-name">{user.name}</h4>
+                  
+                  <div className="profile-info-row">
+                    <span className="profile-info-label">Email:</span>
+                    <span className="profile-info-value">{user.email}</span>
+                  </div>
+
+                  <div className="profile-info-row">
+                    <span className="profile-info-label">Phone:</span>
+                    <span className="profile-info-value">{user.phone}</span>
+                  </div>
+
+                  {/* Actions: Edit Profile & Logout */}
+                  <div className="profile-actions-row">
+                    <button
+                      type="button"
+                      onClick={() => setIsEditing(true)}
+                      className="btn-edit-profile"
+                    >
+                      <Edit3 size={15} />
+                      <span>Edit Profile</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={onLogout}
+                      className="btn-logout-minimal"
+                    >
+                      <LogOut size={15} />
+                      <span>Logout</span>
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                /* Edit Mode Form */
+                <form onSubmit={handleProfileSave} className="profile-edit-form">
+                  <div>
+                    <label className="auth-form-label">Full Name</label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      className="auth-form-input"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="auth-form-label">Email Address</label>
+                    <input
+                      type="email"
+                      required
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      className="auth-form-input"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="auth-form-label">Phone Number</label>
+                    <input
+                      type="tel"
+                      required
+                      value={formData.phone}
+                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                      className="auth-form-input"
+                    />
+                  </div>
+
+                  <div className="profile-edit-actions">
+                    <button type="submit" className="auth-btn-submit">
+                      Save Changes
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setIsEditing(false)}
+                      className="auth-btn-cancel"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </form>
+              )}
+
             </div>
           ) : (
-            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-              
-              {mode === 'register' && (
-                <div>
-                  <label className="auth-form-label">Full Name</label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="e.g. Ananya Sharma"
-                    value={formData.name}
-                    onChange={(e) => setFormData({...formData, name: e.target.value})}
-                    className="auth-form-input"
-                  />
-                </div>
-              )}
+            /* Login Form (When not logged in) */
+            <form onSubmit={handleLoginSubmit} className="auth-login-form">
+              <div>
+                <label className="auth-form-label">Student Name</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Ananya Sharma"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  className="auth-form-input"
+                />
+              </div>
 
               <div>
                 <label className="auth-form-label">Email Address</label>
@@ -146,68 +236,26 @@ export default function AuthModal({ isOpen, onClose, user, onLoginSuccess, onLog
                   required
                   placeholder="student@college.edu"
                   value={formData.email}
-                  onChange={(e) => setFormData({...formData, email: e.target.value})}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   className="auth-form-input"
                 />
               </div>
 
-              {mode === 'register' && (
-                <div>
-                  <label className="auth-form-label">WhatsApp Phone</label>
-                  <input
-                    type="tel"
-                    required
-                    placeholder="9876543210"
-                    value={formData.phone}
-                    onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                    className="auth-form-input"
-                  />
-                </div>
-              )}
-
-              {mode !== 'forgot' && (
-                <div>
-                  <label className="auth-form-label">Password</label>
-                  <input
-                    type="password"
-                    required
-                    placeholder="••••••••"
-                    value={formData.password}
-                    onChange={(e) => setFormData({...formData, password: e.target.value})}
-                    className="auth-form-input"
-                  />
-                </div>
-              )}
-
-              {mode === 'register' && (
-                <div>
-                  <label className="auth-form-label">Confirm Password</label>
-                  <input
-                    type="password"
-                    required
-                    placeholder="••••••••"
-                    value={formData.confirmPassword}
-                    onChange={(e) => setFormData({...formData, confirmPassword: e.target.value})}
-                    className="auth-form-input"
-                  />
-                </div>
-              )}
-
-              <button type="submit" className="auth-btn-submit">
-                {mode === 'login' && 'Sign In'}
-                {mode === 'register' && 'Create Account'}
-                {mode === 'forgot' && 'Send Reset Link'}
-              </button>
-
-              <div className="auth-toggle-mode">
-                {mode === 'login' && (
-                  <p>Don't have an account? <button type="button" onClick={() => setMode('register')} className="auth-link-highlight">Register</button></p>
-                )}
-                {mode === 'register' && (
-                  <p>Already registered? <button type="button" onClick={() => setMode('login')} className="auth-link-highlight">Sign In</button></p>
-                )}
+              <div>
+                <label className="auth-form-label">Phone Number</label>
+                <input
+                  type="tel"
+                  required
+                  placeholder="9876543210"
+                  value={formData.phone}
+                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                  className="auth-form-input"
+                />
               </div>
 
+              <button type="submit" className="auth-btn-submit">
+                Login
+              </button>
             </form>
           )}
 

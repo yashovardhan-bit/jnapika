@@ -215,6 +215,15 @@
   font-weight: 800;
 }
 
+.nav-profile-thumb {
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1.5px solid var(--coral-pink);
+}
+
+
 .profile-name-text {
   max-width: 6rem;
   white-space: nowrap;

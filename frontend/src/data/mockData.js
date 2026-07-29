@@ -4,6 +4,32 @@ import img3 from '../assets/giftcard2.jpeg';
 import img4 from '../assets/pencilart1.jpeg';
 import img5 from '../assets/bouquet1.jpeg';
 import img6 from '../assets/letter1.jpeg';
+import b3 from '../assets/bouquet/b3.jpeg'
+import b4 from '../assets/bouquet/b4.jpg'
+import b5 from '../assets/bouquet/b5.jpg'
+import b6 from '../assets/bouquet/b6.jpg'
+
+import g1 from '../assets/giftcards/g1.jpg'
+import g2 from '../assets/giftcards/g2.jpg'
+import g3 from '../assets/giftcards/g3.jpg'
+import g4 from '../assets/giftcards/g4.jpg'
+import g5 from '../assets/giftcards/g5.jpg'
+import g6 from '../assets/giftcards/g6.jpeg'
+
+import l1 from '../assets/letters/l1.jpeg'
+import l2 from '../assets/letters/l2.jpeg'
+import l3 from '../assets/letters/l3.jpeg'
+import l4 from '../assets/letters/l4.jpeg'
+import l5 from '../assets/letters/l5.jpeg'
+
+import bb1 from '../assets/birthdaybook/bb1.jpg'
+import bb2 from '../assets/birthdaybook/bb2.jpg'
+import bb3 from '../assets/birthdaybook/bb3.jpg'
+import bb4 from '../assets/birthdaybook/bb4.jpg'
+import bb5 from '../assets/birthdaybook/bb5.jpg'
+import bb6 from '../assets/birthdaybook/bb6.jpg'
+
+import personalizedgift from '../assets/personalizedgift.jpg'
 
 export const CATEGORIES = [
   {
@@ -16,11 +42,11 @@ export const CATEGORIES = [
   },
   {
     id: 'personalized',
-    name: 'Personalized Gifts',
+    name: 'Personalized',
     icon: 'Sparkles',
     count: '16 Items',
     description: 'Custom letters, photo frames, photo cards & personalized keepsakes',
-    image: img6,
+    image: personalizedgift,
     badge: 'Custom'
   },
   {
@@ -30,34 +56,18 @@ export const CATEGORIES = [
     count: '12 Items',
     description: 'Wax-sealed handwritten letters & sentimental love scrolls',
     image: img6,
-    badge: 'Romantic'
+    badge: 'memorable'
   },
 
-  {
-    id: 'photoframe',
-    name: 'Photo Frames',
-    icon: 'Sun',
-    count: '15 Items',
-    description: 'Personalized wooden frames & glowing photo displays',
-    image: img1,
-    badge: 'Best Seller'
-  },
-  {
-    id: 'photocards',
-    name: 'Photo Cards',
-    icon: 'Crown',
-    count: '10 Items',
-    description: 'Custom Polaroid style mini photo cards & reels',
-    image: img3,
-    badge: 'Trending'
-  },
+ 
+  
   {
     id: 'giftcard',
     name: 'Gift Cards',
     icon: 'Cake',
     count: '8 Items',
     description: 'Artistic handcrafted surprise gift cards & vouchers',
-    image: img2,
+    image: img3,
     badge: 'Popular'
   },
   {
@@ -117,7 +127,7 @@ export const PRODUCTS = [
     isNew: false,
     isPersonalized: true,
     offerBadge: 'Handmade',
-    image: img6,
+    image: l1,
     description: 'A deeply personal letter written on aged parchment paper, sealed with real red sealing wax & twine ribbon.',
     material: 'Aged Parchment Paper + Red Sealing Wax',
     deliveryTime: '24 Hours'
@@ -168,7 +178,7 @@ export const PRODUCTS = [
     isNew: false,
     isPersonalized: true,
     offerBadge: 'Cute Design',
-    image: img2,
+    image: g1,
     description: 'Pop-up handcrafted birthday card with custom handwritten message space and secret voucher holder.',
     material: 'Textured Craft Cardboard',
     deliveryTime: '24 Hours'
@@ -185,7 +195,7 @@ export const PRODUCTS = [
     isNew: true,
     isPersonalized: true,
     offerBadge: 'Milestone',
-    image: img1,
+    image: bb1,
     description: 'Personalized scrapbook journal loaded with photo slots, quotes, and birthday memory prompts.',
     material: 'Hardbound Kraft Paper Cover',
     deliveryTime: '48 Hours'
@@ -202,7 +212,7 @@ export const PRODUCTS = [
     isNew: false,
     isPersonalized: false,
     offerBadge: 'Forever Flower',
-    image: img5,
+    image: b6,
     description: 'Everlasting handcrafted rose bouquet made from silky pink satin ribbon that never fades.',
     material: 'Premium Satin Ribbon & Floral Wire',
     deliveryTime: '24 Hours'
@@ -236,7 +246,7 @@ export const PRODUCTS = [
     isNew: true,
     isPersonalized: true,
     offerBadge: 'Romantic',
-    image: 'https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=800&auto=format&fit=crop',
+    image: l2,
     description: 'Miniature parchment letter tied with golden thread inside a corked glass bottle filled with red hearts.',
     material: 'Glass Bottle + Parchment Scroll',
     deliveryTime: '24 Hours'
@@ -277,19 +287,19 @@ export const PRODUCTS = [
   },
   {
     id: 'prod-11',
-    name: 'Anniversary Special Gift Card',
+    name: 'Birthday Celebration Gift Card',
     category: 'giftcard',
-    price: 249,
-    originalPrice: 349,
-    rating: 4.9,
-    reviewsCount: 88,
+    price: 199,
+    originalPrice: 299,
+    rating: 4.8,
+    reviewsCount: 64,
     isBestseller: false,
     isNew: false,
     isPersonalized: true,
-    offerBadge: 'Sweet Love',
-    image: img2,
-    description: 'Handmade heart-themed pop-up card for anniversaries and special partner surprises.',
-    material: 'Heavy Cardstock',
+    offerBadge: 'Cute Design',
+    image: g2,
+    description: 'Pop-up handcrafted birthday card with custom handwritten message space and secret voucher holder.',
+    material: 'Textured Craft Cardboard',
     deliveryTime: '24 Hours'
   },
   {
@@ -321,7 +331,7 @@ export const PRODUCTS = [
     isNew: false,
     isPersonalized: true,
     offerBadge: 'Surprise',
-    image: 'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?q=80&w=800&auto=format&fit=crop',
+    image: bb2,
     description: 'Multi-layer handmade surprise box with 20+ photo slots, secret pockets, and center gift compartment.',
     material: '300GSM Craft Board',
     deliveryTime: '24-48 Hours'
@@ -359,7 +369,267 @@ export const PRODUCTS = [
     description: 'High quality ceramic mug printed with HD photo and custom quotes.',
     material: 'Premium Ceramic',
     deliveryTime: '24 Hours'
-  }
+  },
+  {
+    id: 'prod-16',
+    name: 'Personalized Photo Mug',
+    category: 'bouquet',
+    price: 399,
+    originalPrice: 599,
+    rating: 5.0,
+    reviewsCount: 96,
+    isBestseller: true,
+    isNew: false,
+    isPersonalized: true,
+    offerBadge: 'Hot Deal',
+    image: b3,
+    description: 'High quality ceramic mug printed with HD photo and custom quotes.',
+    material: 'Premium Ceramic',
+    deliveryTime: '24 Hours'
+  },
+  {
+    id: 'prod-17',
+    name: 'Personalized Photo Mug',
+    category: 'bouquet',
+    price: 399,
+    originalPrice: 599,
+    rating: 5.0,
+    reviewsCount: 96,
+    isBestseller: true,
+    isNew: false,
+    isPersonalized: true,
+    offerBadge: 'Hot Deal',
+    image: b4,
+    description: 'High quality ceramic mug printed with HD photo and custom quotes.',
+    material: 'Premium Ceramic',
+    deliveryTime: '24 Hours'
+  },
+  {
+    id: 'prod-18',
+    name: 'Personalized Photo Mug',
+    category: 'bouquet',
+    price: 399,
+    originalPrice: 599,
+    rating: 5.0,
+    reviewsCount: 96,
+    isBestseller: true,
+    isNew: false,
+    isPersonalized: true,
+    offerBadge: 'Hot Deal',
+    image: b5,
+    description: 'High quality ceramic mug printed with HD photo and custom quotes.',
+    material: 'Premium Ceramic',
+    deliveryTime: '24 Hours'
+  },{
+    id: 'prod-19',
+    name: 'Birthday Celebration Gift Card',
+    category: 'giftcard',
+    price: 199,
+    originalPrice: 299,
+    rating: 4.8,
+    reviewsCount: 64,
+    isBestseller: false,
+    isNew: false,
+    isPersonalized: true,
+    offerBadge: 'Cute Design',
+    image: g3,
+    description: 'Pop-up handcrafted birthday card with custom handwritten message space and secret voucher holder.',
+    material: 'Textured Craft Cardboard',
+    deliveryTime: '24 Hours'
+  },{
+    id: 'prod-20',
+    name: 'Birthday Celebration Gift Card',
+    category: 'giftcard',
+    price: 199,
+    originalPrice: 299,
+    rating: 4.8,
+    reviewsCount: 64,
+    isBestseller: false,
+    isNew: false,
+    isPersonalized: true,
+    offerBadge: 'Cute Design',
+    image: g4,
+    description: 'Pop-up handcrafted birthday card with custom handwritten message space and secret voucher holder.',
+    material: 'Textured Craft Cardboard',
+    deliveryTime: '24 Hours'
+  },{
+    id: 'prod-21',
+    name: 'Birthday Celebration Gift Card',
+    category: 'giftcard',
+    price: 199,
+    originalPrice: 299,
+    rating: 4.8,
+    reviewsCount: 64,
+    isBestseller: false,
+    isNew: false,
+    isPersonalized: true,
+    offerBadge: 'Cute Design',
+    image: g5,
+    description: 'Pop-up handcrafted birthday card with custom handwritten message space and secret voucher holder.',
+    material: 'Textured Craft Cardboard',
+    deliveryTime: '24 Hours'
+  },{
+    id: 'prod-22',
+    name: 'Birthday Celebration Gift Card',
+    category: 'giftcard',
+    price: 199,
+    originalPrice: 299,
+    rating: 4.8,
+    reviewsCount: 64,
+    isBestseller: false,
+    isNew: false,
+    isPersonalized: true,
+    offerBadge: 'Cute Design',
+    image: g6,
+    description: 'Pop-up handcrafted birthday card with custom handwritten message space and secret voucher holder.',
+    material: 'Textured Craft Cardboard',
+    deliveryTime: '24 Hours'
+  },{
+    id: 'prod-23',
+    name: 'Love Scroll in Glass Bottle',
+    category: 'vintageletters',
+    price: 399,
+    originalPrice: 599,
+    rating: 4.9,
+    reviewsCount: 52,
+    isBestseller: false,
+    isNew: true,
+    isPersonalized: true,
+    offerBadge: 'Romantic',
+    image: l3,
+    description: 'Miniature parchment letter tied with golden thread inside a corked glass bottle filled with red hearts.',
+    material: 'Glass Bottle + Parchment Scroll',
+    deliveryTime: '24 Hours'
+  },{
+    id: 'prod-24',
+    name: 'Love Scroll in Glass Bottle',
+    category: 'vintageletters',
+    price: 399,
+    originalPrice: 599,
+    rating: 4.9,
+    reviewsCount: 52,
+    isBestseller: false,
+    isNew: true,
+    isPersonalized: true,
+    offerBadge: 'Romantic',
+    image: l4,
+    description: 'Miniature parchment letter tied with golden thread inside a corked glass bottle filled with red hearts.',
+    material: 'Glass Bottle + Parchment Scroll',
+    deliveryTime: '24 Hours'
+  },{
+    id: 'prod-25',
+    name: 'Love Scroll in Glass Bottle',
+    category: 'vintageletters',
+    price: 399,
+    originalPrice: 599,
+    rating: 4.9,
+    reviewsCount: 52,
+    isBestseller: false,
+    isNew: true,
+    isPersonalized: true,
+    offerBadge: 'Romantic',
+    image: l5,
+    description: 'Miniature parchment letter tied with golden thread inside a corked glass bottle filled with red hearts.',
+    material: 'Glass Bottle + Parchment Scroll',
+    deliveryTime: '24 Hours'
+  },{
+    id: 'prod-26',
+    name: 'Custom Birthday Memory Book',
+    category: 'birthdaybook',
+    price: 799,
+    originalPrice: 1099,
+    rating: 5.0,
+    reviewsCount: 87,
+    isBestseller: true,
+    isNew: true,
+    isPersonalized: true,
+    offerBadge: 'Milestone',
+    image: bb3,
+    description: 'Personalized scrapbook journal loaded with photo slots, quotes, and birthday memory prompts.',
+    material: 'Hardbound Kraft Paper Cover',
+    deliveryTime: '48 Hours'
+  },{
+    id: 'prod-27',
+    name: 'Custom Birthday Memory Book',
+    category: 'birthdaybook',
+    price: 799,
+    originalPrice: 1099,
+    rating: 5.0,
+    reviewsCount: 87,
+    isBestseller: true,
+    isNew: true,
+    isPersonalized: true,
+    offerBadge: 'Milestone',
+    image: bb4,
+    description: 'Personalized scrapbook journal loaded with photo slots, quotes, and birthday memory prompts.',
+    material: 'Hardbound Kraft Paper Cover',
+    deliveryTime: '48 Hours'
+  },{
+    id: 'prod-28',
+    name: 'Custom Birthday Memory Book',
+    category: 'birthdaybook',
+    price: 799,
+    originalPrice: 1099,
+    rating: 5.0,
+    reviewsCount: 87,
+    isBestseller: true,
+    isNew: true,
+    isPersonalized: true,
+    offerBadge: 'Milestone',
+    image: bb5,
+    description: 'Personalized scrapbook journal loaded with photo slots, quotes, and birthday memory prompts.',
+    material: 'Hardbound Kraft Paper Cover',
+    deliveryTime: '48 Hours'
+  },{
+    id: 'prod-29',
+    name: 'Custom Birthday Memory Book',
+    category: 'birthdaybook',
+    price: 799,
+    originalPrice: 1099,
+    rating: 5.0,
+    reviewsCount: 87,
+    isBestseller: true,
+    isNew: true,
+    isPersonalized: true,
+    offerBadge: 'Milestone',
+    image: bb6,
+    description: 'Personalized scrapbook journal loaded with photo slots, quotes, and birthday memory prompts.',
+    material: 'Hardbound Kraft Paper Cover',
+    deliveryTime: '48 Hours'
+  },{
+    id: 'prod-30',
+    name: 'Custom Birthday Memory Book',
+    category: 'birthdaybook',
+    price: 799,
+    originalPrice: 1099,
+    rating: 5.0,
+    reviewsCount: 87,
+    isBestseller: true,
+    isNew: true,
+    isPersonalized: true,
+    offerBadge: 'Milestone',
+    image: img1,
+    description: 'Personalized scrapbook journal loaded with photo slots, quotes, and birthday memory prompts.',
+    material: 'Hardbound Kraft Paper Cover',
+    deliveryTime: '48 Hours'
+  },
+  ,{
+    id: 'prod-31',
+    name: 'Custom Birthday Memory Book',
+    category: 'personalized',
+    price: 799,
+    originalPrice: 1099,
+    rating: 5.0,
+    reviewsCount: 87,
+    isBestseller: true,
+    isNew: true,
+    isPersonalized: true,
+    offerBadge: 'Milestone',
+    image: personalizedgift,
+    description: 'Personalized scrapbook journal loaded with photo slots, quotes, and birthday memory prompts.',
+    material: 'Hardbound Kraft Paper Cover',
+    deliveryTime: '48 Hours'
+  },
 ];
 
 export const HERO_SLIDES = [

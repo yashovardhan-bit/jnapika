@@ -421,6 +421,12 @@
 }
 
 @media (max-width: 768px) {
+  .hero-slider-controls{
+    min-width: 100%;
+  }
+  .pagination-dots{
+    margin: auto;
+  }
   .hero-container {
     padding: 2rem 1rem 3.5rem 1rem;
   }
@@ -430,9 +436,10 @@
   .hero-subtitle {
     font-size: 0.925rem;
     margin-bottom: 1.5rem;
+    width: 300px;
   }
   .hero-right-cards-deck {
-    max-width: 100%;
+    min-width: 100%;
   }
   .hero-card-img-wrapper {
     height: 195px;
@@ -449,7 +456,12 @@
   .deck-arrow-btn {
     display: none;
   }
-
+  .hero-buttons-row{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
   /* Horizontal Looping Marquee Ticker for Qualities on Mobile */
   .feature-values-section {
     overflow: hidden;

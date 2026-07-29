@@ -187,7 +187,9 @@ export default function Navbar({
       {mobileMenuOpen && (
         <div className="mobile-nav-overlay" onClick={() => setMobileMenuOpen(false)}>
           <div className="mobile-sidebar-drawer" onClick={(e) => e.stopPropagation()}>
-            
+          {/* <button onClick={onClose} className="btn-close-modal" title="Close Wishlist">
+            <X size={20} />
+          </button> */}
             {/* Top Profile Card Header */}
             <div className="sidebar-profile-card">
               <div className="sidebar-avatar-wrapper">

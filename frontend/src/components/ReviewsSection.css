@@ -85,3 +85,12 @@
 @media (max-width: 992px) {
   .reviews-cards-grid { grid-template-columns: 1fr; }
 }
+@media screen and (max-width:679px){
+  .review-card-item{
+    display: flex;
+    flex-direction: column;
+  }
+  .arrow-circle-btn{
+    display: none;
+  }
+}

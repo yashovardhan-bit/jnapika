@@ -151,4 +151,8 @@
 }
 @media (max-width: 640px) {
   .insta-photos-row { grid-template-columns: repeat(2, 1fr); gap: 0.85rem; }
+  .insta-callout-card{
+    height: 142px;
+    padding-top: 2px;
+  }
 }

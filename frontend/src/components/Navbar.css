@@ -398,7 +398,23 @@
   from { transform: translateX(100%); }
   to { transform: translateX(0); }
 }
-
+@media screen and (max-width : 678px){
+  .logo-tagline{
+    display: none;
+  }
+  .nav-right-actions{
+    gap: 10px;
+  }
+  .nav-profile-btn-active{
+    width: 40px;
+    padding: 4px;
+  }
+  .nav-profile-thumb{
+    min-width: 30px;
+    height: 30px;
+  }
+  
+}
 @media (max-width: 992px) {
   .nav-center-links {
     display: none;

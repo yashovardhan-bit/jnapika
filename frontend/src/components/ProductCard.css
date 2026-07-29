@@ -153,3 +153,13 @@
   transform: translateY(-1px);
 }
 
+@media screen and (max-width:678px){
+  .card-actions-row{
+    display: flex;
+    flex-direction: column;
+  }
+  .card-actions-row button{
+    width: 100%;
+  }
+  
+}

@@ -62,6 +62,6 @@
   .bestsellers-grid-container { grid-template-columns: repeat(2, 1fr); gap: 0.85rem; }
 }
 @media (max-width: 480px) {
-  .bestsellers-grid-container { grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+  .bestsellers-grid-container { grid-template-columns: repeat(1, 1fr); gap: 0.75rem; }
 }
 

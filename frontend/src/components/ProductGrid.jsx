@@ -16,12 +16,13 @@ export default function ProductGrid({
   ];
 
   const filteredProducts = selectedCategory === 'all' 
-    ? PRODUCTS 
-    : selectedCategory === 'personalized'
-      ? PRODUCTS.filter(p => p.isPersonalized || p.category === 'personalized' || ['vintageletters', 'photoframe', 'photocards', 'birthdaybook', 'pencilart'].includes(p.category))
+    ?  PRODUCTS.filter(p => p.isPersonalized || p.category === 'personalized' || ['vintageletters', 'photoframe', 'photocards', 'birthdaybook', 'pencilart'].includes(p.category))
       : PRODUCTS.filter(p => p.category === selectedCategory);
 
-
+  
+  console.log(filteredProducts);
+  
+  
   return (
     <section id="products-catalog" className="bestsellers-section">
       

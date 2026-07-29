@@ -114,7 +114,7 @@ export default function Footer({ onSelectCategory, onOpenCustomOrder }) {
           </div>
 
           <div className="footer-bottom-copyright">
-            © 2024 Jnapika. All rights reserved. Handcrafted with ♡ for memories.
+            © 2026 Jnapika. All rights reserved. Handcrafted with ♡ for memories.
           </div>
 
         </div>

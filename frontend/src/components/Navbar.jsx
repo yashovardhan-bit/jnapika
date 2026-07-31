@@ -201,8 +201,8 @@ export default function Navbar({
               </div>
 
               <div className="sidebar-user-info">
-                <h4 className="sidebar-user-name">{user ? user.name : 'Yaso Vardhan'}</h4>
-                <p className="sidebar-user-email">{user ? user.email : 's220123@rguktsklm.ac.in'}</p>
+                <h4 className="sidebar-user-name">{user ? user.name : ''}</h4>
+                <p className="sidebar-user-email">{user ? user.email : ''}</p>
               </div>
 
               <button 

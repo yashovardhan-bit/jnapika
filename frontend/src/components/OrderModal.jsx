@@ -82,7 +82,7 @@ export default function OrderModal({ product, cart, isOpen, onClose, onOrderPlac
         }];
       }
 
-      const response = await fetch("http://localhost:5000/order", {
+      const response = await fetch("https://jnapika.onrender.com/order", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -137,7 +137,7 @@ export default function OrderModal({ product, cart, isOpen, onClose, onOrderPlac
       }
     } catch (err) {
       console.error("Order submit error:", err);
-      alert("Failed to connect to backend server. Please check if backend is running on http://localhost:5000.");
+      alert("Failed to connect to backend server. Please check if backend is running on https://jnapika.onrender.com.");
     } finally {
       setIsSubmitting(false);
     }

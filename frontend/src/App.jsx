@@ -61,7 +61,7 @@ export default function App() {
     const getCart = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/getCart?email=${user.email}`
+          `https://jnapika.onrender.com/getCart?email=${user.email}`
         );
   
         const data = await response.json();
@@ -85,7 +85,7 @@ export default function App() {
     const getWishList = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/getWishList?email=${user.email}`
+          `https://jnapika.onrender.com/getWishList?email=${user.email}`
         );
   
         const data = await response.json();
@@ -125,7 +125,7 @@ export default function App() {
     const productId = product.id
     const exists = wishlist.some((item) => item.id === product.id);
     if (exists) {
-      const response = await fetch("http://localhost:5000/removewishlistItem",{
+      const response = await fetch("https://jnapika.onrender.com/removewishlistItem",{
         method : "DELETE",
         headers :{ "Content-Type":"application/json"},
         body : JSON.stringify({productId,useremail})
@@ -146,7 +146,7 @@ export default function App() {
       showToast(`Removed "${product.name}" from wishlist`, 'wishlist');
     } else {
       // setWishlist([...wishlist, product]);
-      const response = await fetch("http://localhost:5000/addwishlistItem",{
+      const response = await fetch("https://jnapika.onrender.com/addwishlistItem",{
         method : "POST",
         headers :{ "Content-Type":"application/json"},
         body : JSON.stringify({productId,useremail})
@@ -186,7 +186,7 @@ export default function App() {
       console.log("cart===",product);
       const productuser = user.email
       
-      const response = await fetch("http://localhost:5000/addItem",{
+      const response = await fetch("https://jnapika.onrender.com/addItem",{
         method: "POST",
           headers: {
             "Content-Type": "application/json"
@@ -212,7 +212,7 @@ export default function App() {
     try {
       const productuser = user.email
       
-      const response = await fetch("http://localhost:5000/updateQuantity",{
+      const response = await fetch("https://jnapika.onrender.com/updateQuantity",{
         method: "PUT",
           headers: {
             "Content-Type": "application/json"
@@ -243,7 +243,7 @@ export default function App() {
   const handleRemoveFromCart = async (productId) => {
     
     try {
-      const response = await fetch("http://localhost:5000/removeItem", {
+      const response = await fetch("https://jnapika.onrender.com/removeItem", {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json"
@@ -278,7 +278,7 @@ export default function App() {
 
   const handleClearCart = async() => {
    
-    const response = await fetch("http://localhost:5000/removecart", {
+    const response = await fetch("https://jnapika.onrender.com/removecart", {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json"

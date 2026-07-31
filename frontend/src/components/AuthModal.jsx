@@ -51,7 +51,7 @@ export default function AuthModal({ isOpen, onClose, user, onLoginSuccess, onLog
     };
     try {
       
-      const response = await fetch("http://localhost:5000/login", {
+      const response = await fetch("https://jnapika.onrender.com/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -95,7 +95,7 @@ export default function AuthModal({ isOpen, onClose, user, onLoginSuccess, onLog
     };
     try {
       
-      const response = await fetch("http://localhost:5000/signup", {
+      const response = await fetch("https://jnapika.onrender.com/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -139,7 +139,7 @@ export default function AuthModal({ isOpen, onClose, user, onLoginSuccess, onLog
   
     try {
       
-      const response = await fetch("http://localhost:5000/updateProfile", {
+      const response = await fetch("https://jnapika.onrender.com/updateProfile", {
         method: "PUT", // or POST if your backend uses POST
         headers: {
           "Content-Type": "application/json",

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { X, CheckCircle2, Sparkles, ShoppingBag, Truck } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import './OrderModal.css';
@@ -10,10 +10,22 @@ export default function OrderModal({ product, cart, isOpen, onClose, onOrderPlac
     email: user ? user.email : '',
     hostelAddress: '',
     quantity: 1,
-    selectedColor: product && product.availableColors ? product.availableColors[0] : 'Default',
+    selectedColor: product && product.availableColors
+      ? product.availableColors[0]
+      : 'Default',
     customNotes: ''
   });
-
+  useEffect(() => {
+    if (user) {
+      setFormData((prev) => ({
+        ...prev,
+        customerName: user.name || '',
+        phone: user.phone || '',
+        email: user.email || '',
+        hostelAddress: user.hostelAddress || ''
+      }));
+    }
+  }, [user]);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [createdOrder, setCreatedOrder] = useState(null);

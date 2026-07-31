@@ -1,7 +1,7 @@
 const sheets = require("./googlesheets");
 const express = require("express");
 
-const SPREADSHEET_ID = "1YCdgNUIH8hkOGVqHsSecIzdDHytQBZKPDr37DPhmkAo";
+const SPREADSHEET_ID = "1fkEce1S11ooQstWLbAhQ68_BqZdKHt4c6E4T17UKR8Y";
 const PORT = 5000;
 
 const app = express();
@@ -18,7 +18,80 @@ app.use((req, res, next) => {
     }
     next();
 });
+require("dotenv").config();
 
+const cors = require("cors")
+const mongoose = require("mongoose")
+app.use(express.json());
+app.use(cors())
+mongoose.connect(process.env.MONGO_URI)
+.then(()=>{
+    console.log("Mongodb Connected");
+    app.listen(PORT, () => {
+        console.log("Server running on port 3001");
+    });
+})
+.catch((error)=>{
+    console.log("Failed to connect with MongoDB",error);
+    
+})
+
+
+
+
+
+const contactSchema = new mongoose.Schema({
+    name : {
+        type : String,
+        required : true
+    },
+    email : {
+        type : String,
+        required : true
+    },
+    phone : {
+        type : String,
+        required : true
+    }
+    },{
+        timestamps : true
+    }
+)
+const cartSchema = new mongoose.Schema({
+    email: {
+      type: String,
+      required: true
+    },
+  
+    cartItems: [
+      {
+        id: String,
+        
+        quantity: {
+          type: Number,
+          default: 1
+        }
+      }
+    ]
+  });
+const wishlistSchema = new mongoose.Schema({
+    email: {
+        type: String,
+        required: true
+    },
+
+    items: [
+        {
+            id: {
+                type: String,
+                required: true
+            }
+        }
+    ]
+});
+const user = mongoose.model("Users",contactSchema)
+const cartitem = mongoose.model("CartItems",cartSchema)
+const wishlistitems = mongoose.model("Wishlist",wishlistSchema)
 // Home Route
 app.get("/", (req, res) => {
     res.send("Welcome to Jnapika Backend");
@@ -29,12 +102,9 @@ app.get("/products", (req, res) => {
     res.send("List of Products");
 });
 
-// Login Route
-app.post("/login", (req, res) => {
-    res.send("Login Successful");
-});
 
-// Order Route
+
+
 app.post("/order", async (req, res) => {
     try {
         const {
@@ -65,7 +135,7 @@ app.post("/order", async (req, res) => {
         try {
             const existingOrders = await sheets.spreadsheets.values.get({
                 spreadsheetId: SPREADSHEET_ID,
-                range: "Orders!A:A",
+                range: "Orders!A:M",
             });
             const rows = existingOrders.data.values || [];
             const prefix = `JNP-${dateStr}-`;
@@ -165,6 +235,360 @@ app.post("/order", async (req, res) => {
     }
 });
 
-app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+
+
+
+app.post('/login',async(req,res)=>{
+    const userlogin = req.body
+    
+    
+    try{
+        const newUser = await user.findOne({email : userlogin.email});
+        if(!newUser){
+            return res.status(500).json({
+                status : 500,
+                message : "User not found!"
+            })
+        }else{
+            res.status(200).json({
+                status : 200,
+                message : "User found!",
+                data : newUser
+            })
+        }
+        
+        console.log(newUser);
+        
+    }catch(error){
+        console.log(error.message);
+        
+    }
+})
+app.post('/signup',async(req,res)=>{
+    const usersignup = req.body
+    
+    
+    try{
+        const newu = await user.findOne({email : usersignup.email})
+        if(!newu){
+        const newUser = new user(usersignup);
+        await newUser.save()
+        console.log(newUser);
+                
+                res.status(200).json({status : 200,message : "Signup successfully!"})
+        }
+        else{
+            res.status(500).json({status : 500,message : "Email already existed!"})
+        }
+        
+    }catch(error){
+        console.log(error.message);
+        
+    }
+})
+app.put('/updateProfile',async(req,res)=>{
+    const userupdate = req.body
+     try{
+        const updatedUser = await user.findOneAndUpdate(
+            {email : userupdate.email},{
+                name : userupdate.name,
+                phone : userupdate.phone
+            },
+            { returnDocument: 'after' }
+        );
+        if(!updatedUser){
+            return res.status(404).json({
+                success: false,
+                message: "User not found",
+              });
+        }
+        res.status(200).json({
+            success: true,
+            message: "Profile updated successfully",
+            user: updatedUser,
+          });
+        
+    }catch(error){
+        console.error(error.message);
+        res.status(500).json({
+        success: false,
+        message: "Server error",
+        });
+        
+    }
+    
+})
+app.post("/addItem", async (req, res) => {
+    const { product, productuser } = req.body;
+
+    const email = productuser;
+    const quantity = Number(product.quantity) || 1;
+
+    try {
+        let cart = await cartitem.findOne({ email });
+
+        if (!cart) {
+            cart = new cartitem({
+                email,
+                cartItems: [
+                    {
+                        ...product,
+                        quantity
+                    }
+                ]
+            });
+
+            await cart.save();
+
+            return res.status(201).json({
+                success: true,
+                message: "Cart created successfully"
+            });
+        }
+
+        const existingItem = cart.cartItems.find(
+            (item) => item.id === product.id
+        );
+
+        if (existingItem) {
+            existingItem.quantity += 1;
+        } else {
+            cart.cartItems.push({
+                ...product,
+                quantity: 1
+            });
+        }
+
+        await cart.save();
+
+        return res.status(200).json({
+            success: true,
+            message: "Item added successfully"
+        });
+
+    } catch (error) {
+        console.log(error.message);
+
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
 });
+app.delete("/removeItem", async (req, res) => {
+    const { email, id } = req.body;
+
+    try {
+        const cart = await cartitem.findOne({ email });
+
+        if (!cart) {
+            return res.status(404).json({
+                success: false,
+                message: "Cart not found"
+            });
+        }
+
+        cart.cartItems = cart.cartItems.filter(
+            (item) => item.id !== id
+        );
+
+        await cart.save();
+        
+        res.status(200).json({
+            success: true,
+            message: "Item removed successfully",
+            cartItems: cart.cartItems
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+});
+app.get("/getCart", async (req, res) => {
+    const { email } = req.query;
+
+    try {
+        const cart = await cartitem.findOne({ email });
+
+        if (!cart) {
+            return res.status(200).json({
+                success: true,
+                cartItems: []
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            cartItems: cart.cartItems
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+});
+app.get("/getWishList", async (req, res) => {
+    const { email } = req.query;
+
+    try {
+        const wishlist = await wishlistitems.findOne({ email });
+
+        if (!wishlist) {
+            return res.status(200).json({
+                success: true,
+                items: []
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            items: wishlist.items
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+});
+app.put('/updateQuantity',async(req,res)=>{
+    const {productId,productuser,newQty}=req.body
+    
+    try {
+        
+       
+        
+        const cart = await cartitem.findOne(
+            {email : productuser},
+            
+            
+        )
+        
+        if (!cart) {
+            return res.status(404).json({
+                message: "Product not found"
+            });
+        }
+        const item = cart.cartItems.find(
+            (item) => item.id === productId
+        );
+        if (!item) {
+            return res.status(404).json({
+                message: "Product not found"
+            });
+        }
+        item.quantity = newQty;
+        await cart.save();
+
+        res.status(200).json({
+            message: "Quantity updated successfully",
+            products: cart.cartItems
+        });
+
+        
+    } catch (error) {
+        res.status(500).json({
+            message: "Server error",
+            error: error.message
+        });
+    }
+})
+app.delete("/removecart", async (req, res) => {
+    const { email } = req.body;
+
+    try {
+        await cartitem.findOneAndUpdate(
+            { email },
+            {
+                $set: {
+                    cartItems: []
+                }
+            }
+        );
+
+        res.status(200).json({
+            message: "Cart cleared successfully",
+            cartItems: []
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            message: error.message
+        });
+    }
+});
+app.post("/addwishlistItem", async (req, res) => {
+    const { productId, useremail } = req.body;
+
+    try {
+        let wishlist = await wishlistitems.findOne({
+            email: useremail
+        });
+
+        if (!wishlist) {
+            wishlist = new wishlistitems({
+                email: useremail,
+                items: [
+                    {
+                        id: productId
+                    }
+                ]
+            });
+
+            await wishlist.save();
+
+            return res.status(201).json({
+                message: "Wishlist created successfully",
+                items: wishlist.items
+            });
+        }
+
+        const existingItem = wishlist.items.find(
+            (item) => item.id === productId
+        );
+
+        if (existingItem) {
+            return res.status(400).json({
+                message: "Item already exists in wishlist"
+            });
+        }
+
+        wishlist.items.push({ id: productId });
+
+        await wishlist.save();
+
+        res.status(200).json({
+            message: "Item added successfully",
+            items: wishlist.items
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            message: error.message
+        });
+    }
+});
+app.delete("/removewishlistItem",async(req,res)=>{
+    const { productId, useremail } = req.body;
+    try {
+        const newItem = await wishlistitems.findOne({
+            email : useremail
+        })
+        if(!newItem){
+            return res.status(404).json({message : "Item not found!"})
+        }
+        newItem.items = newItem.items.filter(
+            (item)=>item.id !== productId
+        )
+        await newItem.save()
+        return res.status(200).json({message : "Item removed from wishlist!!",items : newItem.items})
+    } catch (error) {
+        return res.status(500).json({message : error.message})
+    }
+})

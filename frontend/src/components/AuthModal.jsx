@@ -10,11 +10,12 @@ const DEFAULT_AVATARS = [
 ];
 
 export default function AuthModal({ isOpen, onClose, user, onLoginSuccess, onLogout }) {
-  if (!isOpen) return null;
 
   const [isEditing, setIsEditing] = useState(false);
   const [islogin,setlogin]=useState(false)
   const [error,setError]=useState("")
+
+
   const [formData, setFormData] = useState({
     name: user?.name || '',
     email: user?.email || '',
@@ -34,6 +35,7 @@ export default function AuthModal({ isOpen, onClose, user, onLoginSuccess, onLog
       });
     }
   }, [user]);
+  if (!isOpen) return null;
 
   const handleLoginSubmit = async(e) => {
     e.preventDefault();

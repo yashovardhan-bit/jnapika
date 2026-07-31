@@ -148,7 +148,6 @@ export default function App() {
 
   const handleOrderPlaced = (newOrder) => {
     setOrderHistory([newOrder, ...orderHistory]);
-    showToast('Order generated! Send via WhatsApp now.', 'order');
   };
 
   const handleLoginSuccess = (userData) => {
@@ -281,7 +280,9 @@ export default function App() {
         isOpen={activeModal === 'order'}
         onClose={() => setActiveModal(null)}
         product={selectedProduct}
+        cart={cart}
         onOrderPlaced={handleOrderPlaced}
+        onClearCart={handleClearCart}
         user={user}
       />
 
@@ -321,7 +322,11 @@ export default function App() {
         onUpdateQuantity={handleUpdateCartQuantity}
         onRemoveFromCart={handleRemoveFromCart}
         onClearCart={handleClearCart}
-        onOpenOrderModal={handleOpenOrder}
+        onCheckoutCart={() => {
+          setSelectedProduct(null);
+          setCartOpen(false);
+          setActiveModal('order');
+        }}
         user={user}
       />
 

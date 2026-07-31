@@ -21,7 +21,7 @@ service-account.json
 .env
 .env.*
 
-# Exclude backend
-backend/
 
+.env
+**/.env
 

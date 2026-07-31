@@ -1,6 +1,5 @@
 import React from 'react';
-import { X, ShoppingCart, Trash2, Plus, Minus, Send, ArrowRight } from 'lucide-react';
-import { STORE_INFO } from '../data/mockData';
+import { X, ShoppingCart, Trash2, Plus, Minus, ShoppingBag, ArrowRight } from 'lucide-react';
 import './CartDrawer.css';
 
 export default function CartDrawer({ 
@@ -10,33 +9,18 @@ export default function CartDrawer({
   onUpdateQuantity, 
   onRemoveFromCart, 
   onClearCart,
-  onOpenOrderModal,
-  user
+  onCheckoutCart
 }) {
   if (!isOpen) return null;
 
   const totalItemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
   const totalAmount = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
-  const generateCartWhatsAppMessage = () => {
-    let msg = `*🛍️ NEW MULTI-ITEM CART ORDER - Jnapika Gifts*\n`;
-    msg += `---------------------------------------\n`;
-    cart.forEach((item, index) => {
-      msg += `${index + 1}. *${item.name}*\n   Qty: ${item.quantity} × ₹${item.price} = ₹${item.price * item.quantity}\n`;
-    });
-    msg += `---------------------------------------\n`;
-    msg += `💰 *TOTAL AMOUNT:* ₹${totalAmount} (Free Delivery/Pickup)\n\n`;
-    msg += `👤 *Customer:* ${user ? user.name : 'Guest Customer'}\n`;
-    msg += `📱 *Phone:* ${user ? user.phone : 'Not provided'}\n`;
-    msg += `📧 *Email:* ${user ? user.email : 'Not provided'}\n`;
-    return msg;
-  };
-
-  const handleCheckoutAll = () => {
+  const handleCheckoutClick = () => {
     if (cart.length === 0) return;
-    const msgText = generateCartWhatsAppMessage();
-    const whatsappUrl = `https://wa.me/${STORE_INFO.ownerWhatsApp}?text=${encodeURIComponent(msgText)}`;
-    window.open(whatsappUrl, '_blank');
+    if (onCheckoutCart) {
+      onCheckoutCart();
+    }
   };
 
   return (
@@ -138,9 +122,9 @@ export default function CartDrawer({
             </div>
 
             <div className="cart-checkout-actions">
-              <button onClick={handleCheckoutAll} className="btn-cart-checkout">
-                <Send size={18} />
-                <span>Checkout Cart via WhatsApp (₹{totalAmount})</span>
+              <button onClick={handleCheckoutClick} className="btn-cart-checkout">
+                <ShoppingBag size={18} />
+                <span>Checkout Cart (₹{totalAmount})</span>
               </button>
               
               <button onClick={onClearCart} className="btn-clear-cart">

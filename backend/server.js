@@ -1,4 +1,6 @@
-const sheets = require("./googlesheets");
+// const sheets = require("./googlesheets");
+require("dotenv").config();
+
 const express = require("express");
 
 const SPREADSHEET_ID = "1fkEce1S11ooQstWLbAhQ68_BqZdKHt4c6E4T17UKR8Y";
@@ -18,7 +20,6 @@ app.use((req, res, next) => {
     }
     next();
 });
-require("dotenv").config();
 
 const cors = require("cors")
 const mongoose = require("mongoose")

@@ -22,7 +22,7 @@ export default function CartDrawer({
       onCheckoutCart();
     }
   };
-
+  
   return (
     <div className="cart-backdrop" onClick={onClose}>
       <div className="cart-panel-box" onClick={(e) => e.stopPropagation()}>

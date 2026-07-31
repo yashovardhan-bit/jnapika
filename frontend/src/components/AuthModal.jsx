@@ -13,6 +13,8 @@ export default function AuthModal({ isOpen, onClose, user, onLoginSuccess, onLog
   if (!isOpen) return null;
 
   const [isEditing, setIsEditing] = useState(false);
+  const [islogin,setlogin]=useState(false)
+  const [error,setError]=useState("")
   const [formData, setFormData] = useState({
     name: user?.name || '',
     email: user?.email || '',
@@ -33,7 +35,7 @@ export default function AuthModal({ isOpen, onClose, user, onLoginSuccess, onLog
     }
   }, [user]);
 
-  const handleLoginSubmit = (e) => {
+  const handleLoginSubmit = async(e) => {
     e.preventDefault();
     if (!formData.name || !formData.email || !formData.phone) {
       setMessage('Please fill in your Name, Email, and Phone number.');
@@ -45,27 +47,119 @@ export default function AuthModal({ isOpen, onClose, user, onLoginSuccess, onLog
       phone: formData.phone,
       avatar: formData.avatar
     };
-    onLoginSuccess(userData);
-    setMessage('Logged in successfully!');
+    try {
+      
+      const response = await fetch("http://localhost:5000/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(userData)
+      });
+
+      const data = await response.json();
+      console.log(data.data);
+      if(data.status ==500){
+        setError("User not found! Create a new account.")
+        setMessage('Login request failed!');
+        
+      }else{
+        onLoginSuccess(userData);
+        setMessage('Logged in successfully!');
+        setTimeout(() => {
+          setMessage('');
+          onClose()
+        }, 1000);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+    
     setTimeout(() => {
       setMessage('');
-      onClose();
-    }, 800);
+    }, 1000);
   };
-
-  const handleProfileSave = (e) => {
+  const handleSinupSubmit = async(e) => {
     e.preventDefault();
-    const updatedUser = {
-      ...user,
+    if (!formData.name || !formData.email || !formData.phone) {
+      setMessage('Please fill in your Name, Email, and Phone number.');
+      return;
+    }
+    const userData = {
       name: formData.name,
       email: formData.email,
       phone: formData.phone,
       avatar: formData.avatar
     };
-    onLoginSuccess(updatedUser);
-    setIsEditing(false);
-    setMessage('Profile updated successfully!');
-    setTimeout(() => setMessage(''), 1500);
+    try {
+      
+      const response = await fetch("http://localhost:5000/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(userData)
+      });
+
+      const data = await response.json();
+      console.log(data.data);
+      if(data.status==500){
+        setError("Email already existed!")
+        setMessage('signup request failed!');
+
+      }else{
+        onLoginSuccess(userData);
+        setMessage('Signup request failed!');
+        setTimeout(() => {
+          setMessage('');
+          onClose()
+        }, 1000);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+    setMessage('Signup successfully!');
+    setTimeout(() => {
+      setMessage('');
+    }, 1000);
+  };
+
+  const handleProfileSave = async (e) => {
+    e.preventDefault();
+  
+    const updatedUser = {
+      ...user,
+      name: formData.name,
+      email: formData.email,
+      phone: formData.phone,
+      avatar: formData.avatar,
+    };
+  
+    try {
+      
+      const response = await fetch("http://localhost:5000/updateProfile", {
+        method: "PUT", // or POST if your backend uses POST
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedUser),
+      });
+  
+      const data = await response.json();
+  
+      if (response.ok) {
+        onLoginSuccess(updatedUser);
+        setIsEditing(false);
+        setMessage("Profile updated successfully!");
+      } else {
+        setMessage(data.message || "Failed to update profile");
+      }
+    } catch (error) {
+      console.error(error);
+      setMessage("Something went wrong");
+    }
+  
+    setTimeout(() => setMessage(""), 1500);
   };
 
   return (
@@ -79,7 +173,7 @@ export default function AuthModal({ isOpen, onClose, user, onLoginSuccess, onLog
               <User size={18} color="#d95e68" />
             </div>
             <h3 className="auth-modal-title">
-              {user ? 'Profile' : 'Login'}
+              {user ? 'Profile' : islogin==true?'SignUp':'Login'}
             </h3>
           </div>
           <button onClick={onClose} className="auth-btn-close" title="Close modal">
@@ -216,7 +310,7 @@ export default function AuthModal({ isOpen, onClose, user, onLoginSuccess, onLog
             </div>
           ) : (
             /* Login Form (When not logged in) */
-            <form onSubmit={handleLoginSubmit} className="auth-login-form">
+            islogin==false?<form onSubmit={handleLoginSubmit} className="auth-login-form">
               <div>
                 <label className="auth-form-label">Student Name</label>
                 <input
@@ -240,7 +334,7 @@ export default function AuthModal({ isOpen, onClose, user, onLoginSuccess, onLog
                   className="auth-form-input"
                 />
               </div>
-
+              {error==""?"":<p style={{color : "red"}}>{error}</p>}
               <div>
                 <label className="auth-form-label">Phone Number</label>
                 <input
@@ -256,6 +350,50 @@ export default function AuthModal({ isOpen, onClose, user, onLoginSuccess, onLog
               <button type="submit" className="auth-btn-submit">
                 Login
               </button>
+              <p>Don't have an account?<a style={{textDecoration:"underline",color:"blue",cursor:"pointer"}} onClick={()=>{setlogin(true)}}>signup</a></p>
+            </form>:<form onSubmit={handleSinupSubmit} className="auth-login-form">
+              <div>
+                <label className="auth-form-label">Student Name</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Ananya Sharma"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  className="auth-form-input"
+                />
+              </div>
+
+              <div>
+                <label className="auth-form-label">Email Address</label>
+                <input
+                  type="email"
+                  required
+                  placeholder="student@college.edu"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  className="auth-form-input"
+                />
+              </div>
+              {error==""?"":<p style={{color : "red"}}>{error}</p>}
+
+              <div>
+                <label className="auth-form-label">Phone Number</label>
+                <input
+                  type="tel"
+                  required
+                  placeholder="9876543210"
+                  value={formData.phone}
+                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                  className="auth-form-input"
+                />
+              </div>
+
+              <button type="submit" className="auth-btn-submit">
+                Sign Up
+              </button>
+              <p>Already have an account?<a style={{textDecoration:"underline",color:"blue",cursor:"pointer"}} onClick={()=>{setlogin(false)}}>login</a></p>
+
             </form>
           )}
 

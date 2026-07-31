@@ -20,7 +20,6 @@ export default function ProductGrid({
       : PRODUCTS.filter(p => p.category === selectedCategory);
 
   
-  console.log(filteredProducts);
   
   
   return (

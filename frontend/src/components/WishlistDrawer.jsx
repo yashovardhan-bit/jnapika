@@ -48,7 +48,7 @@ export default function WishlistDrawer({ isOpen, onClose, wishlist, onRemoveFrom
                   </button>
                   
                   <button
-                    onClick={() => onRemoveFromWishlist(product.id)}
+                    onClick={() => onRemoveFromWishlist(product)}
                     className="btn-wishlist-remove"
                     title="Remove item"
                   >

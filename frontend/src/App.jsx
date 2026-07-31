@@ -26,15 +26,9 @@ export default function App() {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   
-  const [wishlist, setWishlist] = useState(() => {
-    const saved = localStorage.getItem('jnapika_wishlist');
-    return saved ? JSON.parse(saved) : [];
-  });
+  const [wishlist, setWishlist] = useState([]);
 
-  const [cart, setCart] = useState(() => {
-    const saved = localStorage.getItem('jnapika_cart');
-    return saved ? JSON.parse(saved) : [];
-  });
+  const [cart, setCart] = useState([]);
 
   const [orderHistory, setOrderHistory] = useState(() => {
     const saved = localStorage.getItem('jnapika_orders');
@@ -54,15 +48,7 @@ export default function App() {
   // Toast Notification State: { text: string, type: 'cart' | 'wishlist' | 'order' }
   const [toast, setToast] = useState(null);
   
-  const [user, setUser] = useState(() => {
-    const saved = localStorage.getItem('jnapika_user');
-    return saved ? JSON.parse(saved) : {
-      name: 'Yaso Vardhan',
-      email: 's220123@rguktsklm.ac.in',
-      phone: '+91 98765 43210',
-      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=400&auto=format&fit=crop'
-    };
-  });
+  const [user, setUser] = useState(null);
 
 
   useEffect(() => {
@@ -70,8 +56,59 @@ export default function App() {
   }, [wishlist]);
 
   useEffect(() => {
-    localStorage.setItem('jnapika_cart', JSON.stringify(cart));
-  }, [cart]);
+    if (!user?.email) return;
+  
+    const getCart = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:5000/getCart?email=${user.email}`
+        );
+  
+        const data = await response.json();
+        const updatedCart = data.cartItems.map((cartItem) => {
+          const product = PRODUCTS.find(
+            (product) => product.id === cartItem.id
+          );
+        
+          return {
+            ...product,
+            quantity: cartItem.quantity
+          };
+        });
+        
+        setCart(updatedCart);
+        
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+    const getWishList = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:5000/getWishList?email=${user.email}`
+        );
+  
+        const data = await response.json();
+        console.log("refreshed",data.items);
+        
+        const updatedCart = (data.items || []).map((cartItem) => {
+          return PRODUCTS.find(
+            (product) => product.id === cartItem.id
+          );
+        
+          
+        });
+        
+        setWishlist(updatedCart);
+        
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+    // "getWishList"
+    getCart();
+    getWishList();
+  }, [user]);
 
   useEffect(() => {
     localStorage.setItem('jnapika_orders', JSON.stringify(orderHistory));
@@ -82,18 +119,57 @@ export default function App() {
     setTimeout(() => setToast(null), 3200);
   };
 
-  const handleToggleWishlist = (product) => {
+  const handleToggleWishlist = async(product) => {
+    console.log("wishlist",product);
+    const useremail = user.email
+    const productId = product.id
     const exists = wishlist.some((item) => item.id === product.id);
     if (exists) {
-      setWishlist(wishlist.filter((item) => item.id !== product.id));
+      const response = await fetch("http://localhost:5000/removewishlistItem",{
+        method : "DELETE",
+        headers :{ "Content-Type":"application/json"},
+        body : JSON.stringify({productId,useremail})
+      })
+      const data = await response.json()
+      if(response.ok){
+        const updatedCart = data.items.map((cartItem) => {
+          return PRODUCTS.find(
+            (product) => product.id === cartItem.id
+          );
+        
+          
+        });
+        console.log("hellodelete================");
+        
+        setWishlist(updatedCart);
+      }
       showToast(`Removed "${product.name}" from wishlist`, 'wishlist');
     } else {
-      setWishlist([...wishlist, product]);
+      // setWishlist([...wishlist, product]);
+      const response = await fetch("http://localhost:5000/addwishlistItem",{
+        method : "POST",
+        headers :{ "Content-Type":"application/json"},
+        body : JSON.stringify({productId,useremail})
+      })
+      const data = await response.json()
+      if(response.ok){
+        const updatedCart = data.items.map((cartItem) => {
+          return PRODUCTS.find(
+            (product) => product.id === cartItem.id
+          );
+        
+          
+        });
+        console.log("hello================");
+        
+        setWishlist(updatedCart);
+      }
       showToast(`Added "${product.name}" to wishlist`, 'wishlist');
     }
+    
   };
 
-  const handleAddToCart = (product) => {
+  const handleAddToCart = async(product) => {
     setCart((prevCart) => {
       const existing = prevCart.find((item) => item.id === product.id);
       if (existing) {
@@ -106,24 +182,115 @@ export default function App() {
       return [...prevCart, { ...product, quantity: 1 }];
     });
     showToast(`Added "${product.name}" to cart`, 'cart');
+    try {
+      console.log("cart===",product);
+      const productuser = user.email
+      
+      const response = await fetch("http://localhost:5000/addItem",{
+        method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({product,productuser})
+      })
+      const data = await response.json()
+      console.log(data.message);
+      
+    } catch (error) {
+      console.log(error.message);
+      
+    }
+
   };
 
-  const handleUpdateCartQuantity = (productId, newQty) => {
+  const handleUpdateCartQuantity = async(productId, newQty) => {
     if (newQty <= 0) {
       handleRemoveFromCart(productId);
       return;
     }
-    setCart((prevCart) =>
-      prevCart.map((item) => (item.id === productId ? { ...item, quantity: newQty } : item))
-    );
+    
+    try {
+      const productuser = user.email
+      
+      const response = await fetch("http://localhost:5000/updateQuantity",{
+        method: "PUT",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({productId,productuser,newQty})
+      })
+      const data = await response.json()
+      
+      const updatedCart = data.products.map((cartItem) => {
+        const product = PRODUCTS.find(
+          (product) => product.id === cartItem.id
+        );
+      
+        return {
+          ...product,
+          quantity: cartItem.quantity
+        };
+      });
+      
+      setCart(updatedCart);
+      
+    } catch (error) {
+      console.log(error.message);
+      
+    }
   };
 
-  const handleRemoveFromCart = (productId) => {
-    setCart((prevCart) => prevCart.filter((item) => item.id !== productId));
-    showToast('Item removed from cart', 'cart');
+  const handleRemoveFromCart = async (productId) => {
+    
+    try {
+      const response = await fetch("http://localhost:5000/removeItem", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          email: user.email, 
+          id: productId
+        })
+      });
+  
+      const data = await response.json();
+  
+      const updatedCart = data.cartItems.map((cartItem) => {
+        const product = PRODUCTS.find(
+          (product) => product.id === cartItem.id
+        );
+      
+        return {
+          ...product,
+          quantity: cartItem.quantity
+        };
+      });
+      
+      setCart(updatedCart);
+  
+      showToast("Item removed from cart", "cart");
+  
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
-  const handleClearCart = () => {
+  const handleClearCart = async() => {
+   
+    const response = await fetch("http://localhost:5000/removecart", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        email: user.email, 
+        
+      })
+    });
+    const data = await response.json()
+   
+    
     setCart([]);
     showToast('Cart cleared', 'cart');
   };
@@ -150,8 +317,10 @@ export default function App() {
     setOrderHistory([newOrder, ...orderHistory]);
   };
 
-  const handleLoginSuccess = (userData) => {
+  const handleLoginSuccess = async(userData) => {
     setUser(userData);
+    
+    
     localStorage.setItem('jnapika_user', JSON.stringify(userData));
     showToast(`Welcome back, ${userData.name}!`, 'info');
   };
@@ -170,9 +339,10 @@ export default function App() {
     const el = document.getElementById('products-catalog');
     if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
-
   const totalCartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
-
+  // const totalCartCount = cart.length;
+  
+  
   return (
     <div className="app-wrapper">
       
@@ -310,7 +480,7 @@ export default function App() {
         isOpen={wishlistOpen}
         onClose={() => setWishlistOpen(false)}
         wishlist={wishlist}
-        onRemoveFromWishlist={(id) => setWishlist(wishlist.filter((w) => w.id !== id))}
+        onRemoveFromWishlist={handleToggleWishlist}
         onOrderNow={handleOpenOrder}
         onAddToCart={handleAddToCart}
       />
